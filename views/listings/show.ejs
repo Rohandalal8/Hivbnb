@@ -1,12 +1,6 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Hivbnb</title>
-</head>
+<% layout("/layouts/boilerplate") %>
 <body>
-    <h3>Listnig Details :</h3>
+    <h3>Listing Details :</h3>
     <ul>
         <li><%= Listing.title %></li>
         <li><%= Listing.description %></li>
@@ -20,4 +14,3 @@
         <button>Delete this listing</button>
     </form>
 </body>
-</html>

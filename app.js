@@ -2,10 +2,13 @@ const express = require('express');
 const app = express();
 const methodOverride = require('method-override');
 const listing = require('./models/listing');
+const ejsMate = require('ejs-mate');
 
 app.set('view engine', 'ejs');
 app.use(express.urlencoded({ extended: true }));
 app.use(methodOverride('_method'));
+app.engine('ejs', ejsMate);
+app.use(express.static('public'));
 
 app.get('/', (req, res) => {
     res.send('Hello World');

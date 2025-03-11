@@ -1,0 +1,68 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Plus+Jakarta+Sans:ital,wght@0,200..800;1,200..800&display=swap');
+
+/* Global */
+body {
+    font-family: "Plus Jakarta Sans", sans-serif !important;
+}
+
+/* navbar */
+.navbar {
+    height: 4rem;
+    background-color: white;
+}
+
+.navbar-brand {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.25rem;
+    color: #fe424d !important;
+    font-weight: 600 !important;
+    font-size: 1.25rem !important;
+}
+
+.navbar-brand img{
+    height: 2.3rem;
+}
+
+.nav-link {
+    color: #222222 !important;
+}
+
+/* Footer  */
+.f-info-links a{
+    color: #222222;
+    text-decoration: none;
+}
+
+.f-info-links a:hover{
+    text-decoration: underline;
+}
+
+/* Card */
+.card {
+    border: none !important;
+}
+
+.card-img-top {
+    border-radius: 0.8rem !important;
+    width: 100% !important;
+    height: 20rem !important;
+    overflow: hidden;
+}
+
+.card-img {
+    height: 100%;
+    width: 100%;
+    transition: transform 0.3s ease-in-out;
+    object-fit: cover;
+}
+
+.card-img:hover {
+    transform: scale(1.1);
+}
+
+.card-text .location {
+    position: relative;
+    top: -5px;
+}

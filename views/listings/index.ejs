@@ -1,17 +1,25 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Hivbnb</title>
-</head>
-<body>
-    <h3>All Listings</h3>
-    <a href="/listings/new">Create a new listing</a>
-    <ul>
-        <% for (let listing of allListings) { %>
-            <li><a href="/listing/<%= listing._id %>"><%= listing.title %></a></li>
+<% layout("/layouts/boilerplate") %>
+
+  <body>
+    <div class="row row-cols-1 row-cols-md-3 row-cols-lg-4 g-4 pt-4">
+      <% for (let listing of allListings) { %>
+        <a href="/listing/<%= listing._id %>" class="text-decoration-none">
+          <div class="card">
+            <div class="card-img-top">
+              <img src="<%= listing.image.url %>" class="card-img" alt="lising-image">
+            </div>
+            <div class="card-body px-0 py-2">
+              <p class="card-text"><b>
+                  <%= listing.title %>
+                </b> <br>
+                <small class="text-secondary location">
+                  <%= listing.location %>, <%= listing.country %>
+                </small> <br>
+                &#8377;<%= listing.price.toLocaleString("en-IN") %> <small>night</small>
+              </p>
+            </div>
+          </div>
+        </a>
         <% } %>
-    </ul>
-</body>
-</html>
+    </div>
+  </body>
