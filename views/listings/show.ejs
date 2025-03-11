@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hivbnb</title>
+</head>
+<body>
+    <h3>Listnig Details :</h3>
+    <ul>
+        <li><%= Listing.title %></li>
+        <li><%= Listing.description %></li>
+        <li>&#8377; <%= Listing.price.toLocaleString("en-IN") %></li>
+        <li><%= Listing.location %></li>
+        <li><%= Listing.country %></li>
+    </ul>
+    <a href="/listing/<%= Listing._id %>/edit">Edit this listing</a>
+    <br><br>
+    <form action="/listing/<%= Listing._id %>?_method=DELETE" method="POST">
+        <button>Delete this listing</button>
+    </form>
+</body>
+</html>

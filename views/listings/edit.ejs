@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hivbnb</title>
+</head>
+<body>
+    <h3>Edit Your Listing</h3>
+    <form action="/listings/<%= Listing._id %>?_method=PUT" method="POST">
+        <input type="text" name="listing[title]" placeholder="Enter title" value="<%= Listing.title %>"><br><br>
+        <textarea name="listing[description]" cols="30" placeholder="Enter description"><%= Listing.description %></textarea><br><br>
+        <input type="text" name="listing[image]" placeholder="Enter image URL/link" value="<%= Listing.image.url %>"><br><br>
+        <input type="number" name="listing[price]" placeholder="Enter price" value="<%= Listing.price %>"><br><br>
+        <input type="text" name="listing[location]" placeholder="Enter location" value="<%= Listing.location %>"><br><br>
+        <input type="text" name="listing[country]" placeholder="Enter country" value="<%= Listing.country %>"><br><br>
+        <button type="submit">Edit Listing</button>
+    </form>
+</body>
+</html>
