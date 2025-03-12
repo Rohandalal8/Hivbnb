@@ -3,6 +3,14 @@
 /* Global */
 body {
     font-family: "Plus Jakarta Sans", sans-serif !important;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+.container {
+    flex: 1;
+    padding: 1rem;
 }
 
 /* navbar */
@@ -27,6 +35,25 @@ body {
 
 .nav-link {
     color: #222222 !important;
+}
+
+.nav-link:hover {
+    text-decoration: underline;
+    text-decoration-color: lightgray;
+    text-underline-offset: 0.5rem;
+}
+
+.nav-link:focus{
+    text-decoration-color: #222222;
+}
+
+.navbar-toggler {
+    border: none !important;
+    outline: none !important;
+}
+
+.navbar-toggler:focus {
+    box-shadow: none !important;
 }
 
 /* Footer  */
@@ -65,4 +92,31 @@ body {
 .card-text .location {
     position: relative;
     top: -5px;
+}
+
+/* Disable resizing for all textarea elements */
+textarea {
+    resize: none !important;
+}
+
+/* remove shadow for all input elements and textarea  */
+input:focus, textarea:focus {
+    box-shadow: none !important;
+    border: 1px solid #222222 !important;
+}
+
+/* add color to all custom buttons */
+.custom-btn {
+    background-color: #fe424d !important;
+    color: white !important;
+}
+
+.custom-btn:hover {
+    background-color: #ff5a5f !important;
+}
+
+/* show  */
+.show-img:hover {
+    transform: none;
+    opacity: 0.9;
 }
