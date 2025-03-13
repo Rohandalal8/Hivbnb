@@ -3,7 +3,7 @@
 <div class="row">
     <div class="col-md-8 offset-md-2">
     <h3>Edit Your Listing</h3>
-    <form action="/listings/<%= Listing._id %>?_method=PUT" method="POST">
+    <form action="/listings/<%= Listing._id %>?_method=PUT" method="POST" novalidate class="needs-validation">
         <div class="mb-3">
             <label for="title" class="form-label">Title</label>
             <input type="text" name="listing[title]" placeholder="Enter title" class="form-control" value="<%= Listing.title %>" required>
@@ -11,12 +11,12 @@
 
         <div class="mb-3">
             <label for="description" class="form-label">Description</label>
-            <textarea name="listing[description]" cols="30" placeholder="Enter description" class="form-control"><%= Listing.description %></textarea>
+            <textarea name="listing[description]" cols="30" class="form-control" required><%= Listing.description %></textarea>
         </div>
 
         <div class="mb-3">
             <label for="image" class="form-label">Image</label>
-            <input type="text" name="listing[image][url]" placeholder="Enter image URL/link" class="form-control" value="<%= Listing.image.url %>">
+            <input type="text" name="listing[image][url]" placeholder="Enter image URL/link" class="form-control" value="<%= Listing.image.url %>" required>
         </div>
 
         <div class="mb-3">
