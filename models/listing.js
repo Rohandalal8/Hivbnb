@@ -1,4 +1,5 @@
 const mongoose = require('mongoose');
+const review = require('./review');
 
 const MONGO_URL = 'mongodb://127.0.0.1:27017/Hivbnb';
 
@@ -37,7 +38,13 @@ const listingSchema = new mongoose.Schema({
     },
     price: Number,
     location: String,
-    country: String
+    country: String,
+    reviews: [
+        {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: 'Review'
+        }
+    ]
 });
 
 module.exports = mongoose.model('Listing', listingSchema);

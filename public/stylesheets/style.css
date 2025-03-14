@@ -120,3 +120,11 @@ input:focus, textarea:focus {
     transform: none;
     opacity: 0.9;
 }
+
+#rating:focus {
+    border: none !important;
+}
+
+.fa-star, .dot, .review-time {
+    font-size: 0.5rem;
+}
