@@ -125,6 +125,11 @@ input:focus, textarea:focus {
     border: none !important;
 }
 
-.fa-star, .dot, .review-time {
+.fa-star, .dot {
     font-size: 0.5rem;
+}
+
+.review-time {
+    font-size: 0.6rem;
+    padding-top: 0.1rem;
 }

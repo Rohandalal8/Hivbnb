@@ -1,5 +1,5 @@
 const mongoose = require('mongoose');
-const review = require('./review');
+const review = require('./review.js');
 
 const MONGO_URL = 'mongodb://127.0.0.1:27017/Hivbnb';
 
@@ -45,6 +45,12 @@ const listingSchema = new mongoose.Schema({
             ref: 'Review'
         }
     ]
+});
+
+listingSchema.post('findOneAndDelete', async (listing) => {
+    if (listing.reviews.length) {
+        await review.deleteMany({ _id: { $in: listing.reviews } });
+    }
 });
 
 module.exports = mongoose.model('Listing', listingSchema);

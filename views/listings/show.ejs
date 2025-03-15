@@ -23,8 +23,8 @@
             </div>
         </div>
         <div class="col-lg-8 offset-lg-2 d-flex align-items-center gap-4 py-3 border-bottom">
-            <a href="/listing/<%= Listing._id %>/edit" class="btn custom-btn">Edit</a>
-            <form action="/listing/<%= Listing._id %>?_method=DELETE" method="POST">
+            <a href="/listings/<%= Listing._id %>/edit" class="btn custom-btn">Edit</a>
+            <form action="/listings/<%= Listing._id %>?_method=DELETE" method="POST">
                 <button class="btn btn-dark">Delete</button>
             </form>
         </div>
@@ -49,7 +49,7 @@
 
         <div class="col-lg-8 offset-lg-2 py-3">
             <% if(Listing.reviews.length > 0) { %>
-                <h4> <%= Listing.reviews.length %> Reviews</h4>
+                <h4> Reviews</h4>
                 <div class="row d-flex justify-content-between">
                     <% Listing.reviews.reverse().forEach(review => { %>
                         <div class="card col-lg-5 d-flex mb-2">
@@ -59,9 +59,13 @@
                                     <i class="fa-solid fa-star"></i>
                                 <% } %>
                                 <span class="dot mx-1 text-secondary">&bull;</span>
-                                <span class="review-time m-0 p-0 "> <%= moment(review.createdAt).fromNow() %> </span>
+                                <span class="review-time text-secondary "><b> <%= moment(review.createdAt).fromNow() %></b></span>
                             </div>
-                            <p><%= review.comment %></p>
+                            <p class="mb-1"><%= review.comment %></p>
+
+                            <form action="/listings/<%= Listing._id %>/reviews/<%= review._id %>?_method=DELETE" method="POST">
+                                <button class="btn btn-outline-danger">Delete</button>
+                            </form>
                         </div>
                     <% }) %>
                 </div>
