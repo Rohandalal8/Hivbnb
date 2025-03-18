@@ -13,6 +13,19 @@ body {
     padding: 1rem;
 }
 
+label {
+    position: relative;
+    top: 1.05rem;
+    left: 0.5rem;
+    padding: 0 0.3rem;
+    font-size: 0.8rem;
+    background-color: white;
+}
+
+input {
+    border-color: lightgray !important;
+}
+
 /* navbar */
 .navbar {
     height: 4rem;
@@ -35,16 +48,12 @@ body {
 
 .nav-link {
     color: #222222 !important;
+    padding: 0.5rem !important;
+    border-radius: 5rem;
 }
 
 .nav-link:hover {
-    text-decoration: underline;
-    text-decoration-color: lightgray;
-    text-underline-offset: 0.5rem;
-}
-
-.nav-link:focus{
-    text-decoration-color: #222222;
+    background-color: rgba(211, 211, 211, 0.453);
 }
 
 .navbar-toggler {
@@ -135,14 +144,11 @@ input:focus, textarea:focus {
 }
 
 /* alert  */
-.alert-success {
-    border-left: 5px solid #28a745 !important;
-    background: #d4eddab5 !important;
-    color: #155724 !important;
+
+.alert {
+    box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.4);
 }
 
-.alert-danger {
-    border-left: 5px solid #dc3545 !important;
-    background: #f8d7da !important;
-    color: #721c24 !important;
+.btn-close:focus {
+    box-shadow: none !important;
 }
