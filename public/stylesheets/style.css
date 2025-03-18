@@ -133,3 +133,16 @@ input:focus, textarea:focus {
     font-size: 0.6rem;
     padding-top: 0.1rem;
 }
+
+/* alert  */
+.alert-success {
+    border-left: 5px solid #28a745 !important;
+    background: #d4eddab5 !important;
+    color: #155724 !important;
+}
+
+.alert-danger {
+    border-left: 5px solid #dc3545 !important;
+    background: #f8d7da !important;
+    color: #721c24 !important;
+}

@@ -3,6 +3,8 @@ const app = express();
 const methodOverride = require('method-override');
 const ejsMate = require('ejs-mate');
 const ExpressError = require('./utils/expressError.js');
+const session = require('express-session');
+const flash = require('connect-flash');
 
 const listingRouter = require('./routes/listing.js');
 const reviewRouter = require('./routes/review.js');
@@ -13,8 +15,28 @@ app.use(methodOverride('_method'));
 app.engine('ejs', ejsMate);
 app.use(express.static('public'));
 
+const sessionOptions = {
+    secret: 'thisisnotagoodsecret',
+    resave: false,
+    saveUninitialized: true,
+    cookie: {
+        httpOnly: true,
+        expires: Date.now() + 7 * 24 * 60 * 60 * 1000,
+        maxAge: 7 * 24 * 60 * 60 * 1000
+    }
+};
+
 app.get('/', (req, res) => {
     res.send('Hello World');
+});
+
+app.use(session(sessionOptions));
+app.use(flash());
+
+app.use((req, res, next) => {
+    res.locals.success = req.flash('success');
+    res.locals.error = req.flash('error');
+    next();
 });
 
 app.use('/listings', listingRouter);
