@@ -22,8 +22,30 @@ label {
     background-color: white;
 }
 
-input {
+input, textarea {
     border-color: lightgray !important;
+}
+
+input:focus, textarea:focus {
+    box-shadow: none !important;
+    border: 1px solid #222222 !important;
+}
+
+input::placeholder, textarea::placeholder {
+    color: lightgray !important;
+}
+
+textarea {
+    resize: none !important;
+}
+
+.custom-btn {
+    background-color: #fe424d !important;
+    color: white !important;
+}
+
+.custom-btn:hover {
+    background-color: #ff5a5f !important;
 }
 
 /* navbar */
@@ -103,27 +125,6 @@ input {
     top: -5px;
 }
 
-/* Disable resizing for all textarea elements */
-textarea {
-    resize: none !important;
-}
-
-/* remove shadow for all input elements and textarea  */
-input:focus, textarea:focus {
-    box-shadow: none !important;
-    border: 1px solid #222222 !important;
-}
-
-/* add color to all custom buttons */
-.custom-btn {
-    background-color: #fe424d !important;
-    color: white !important;
-}
-
-.custom-btn:hover {
-    background-color: #ff5a5f !important;
-}
-
 /* show  */
 .show-img:hover {
     transform: none;
@@ -141,6 +142,11 @@ input:focus, textarea:focus {
 .review-time {
     font-size: 0.6rem;
     padding-top: 0.1rem;
+}
+
+.listing-description {
+    position: relative;
+    top: -1rem;
 }
 
 /* alert  */

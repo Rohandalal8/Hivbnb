@@ -6,38 +6,41 @@
                     <%= Listing.title %>
                 </b></h3>
         </div>
-        <div class="col-lg-8 offset-lg-2">
+        <div class="col-lg-8 offset-lg-2 border-bottom">
             <div class="card">
                 <div class="card-img-top">
                     <img src="<%= Listing.image.url %>" class="card-img show-img" alt="Listing-image">
                 </div>
                 <div class="card-body px-0 py-1">
-                    <p class="card-text">
+                    <p class="card-text m-0">
                         <div class="row">
                             <b class="col-md-8 col-12"><%= Listing.location %>, <%= Listing.country %></b>
                         <p class="m-0 col-md-4 text-md-end">&#8377;<%= Listing.price.toLocaleString("en-IN") %> <small>night</small></p>
                         </div>
                         </p>
-                    <p class="m-0"><%= Listing.description %></p>
+                    <p class="m-0 listing-description"><%= Listing.description %></p>
+                    <b>Hosted by <%= Listing.owner.username %></b>
                 </div>
             </div>
-        </div>
-        <div class="col-lg-8 offset-lg-2 d-flex align-items-center gap-4 py-3 border-bottom">
-            <a href="/listings/<%= Listing._id %>/edit" class="btn custom-btn">Edit</a>
-            <form action="/listings/<%= Listing._id %>?_method=DELETE" method="POST">
-                <button class="btn btn-dark">Delete</button>
-            </form>
+            <% if (currentUser && currentUser._id.equals(Listing.owner._id)) { %>
+                <div class="d-flex align-items-center gap-4 py-3">
+                    <a href="/listings/<%= Listing._id %>/edit" class="btn custom-btn">Edit</a>
+                    <form action="/listings/<%= Listing._id %>?_method=DELETE" method="POST">
+                        <button class="btn btn-dark">Delete</button>
+                    </form>
+                </div>
+            <% } %>
         </div>
 
         <div class="col-lg-8 offset-lg-2 py-3 border-bottom">
             <h4>Leave a Review</h4>
             <form action="/listings/<%= Listing._id %>/reviews" method="POST" novalidate class="needs-validation">
                 <div class="mb-3">
-                    <label for="rating">Rating</label>
+                    <!-- <label for="rating">Rating</label> -->
                     <input type="range" name="review[rating]" id="rating" min="1" max="5" step="1" class="form-range">
                 </div>
                 <div class="mb-3">
-                    <label for="comment">Comment</label>
+                    <label for="comment" class="form-label">Comment</label>
                     <textarea name="review[comment]" id="comment" cols="30" rows="5" class="form-control" required></textarea>
                     <div class="invalid-feedback">
                         Please enter a comment for the review.
