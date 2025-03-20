@@ -149,6 +149,10 @@ textarea {
     top: -1rem;
 }
 
+.secondary-stars {
+    color: rgba(211, 211, 211, 0.641);
+}
+
 /* alert  */
 
 .alert {

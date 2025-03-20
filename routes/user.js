@@ -48,9 +48,9 @@ router.get('/logout', (req, res) => {
     req.logout((err) => {
         if (err) {
             req.flash('error', 'Something went wrong!');
-            return res.redirect('/listings');
+            // return res.redirect('/listings');
         }
-        req.flash('success', 'Goodbye!');
+        // req.flash('success', 'Goodbye!');
         res.redirect('/listings');
     })
 });
