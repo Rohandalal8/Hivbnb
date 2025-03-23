@@ -166,3 +166,8 @@ textarea {
 .btn-close:focus {
     box-shadow: none !important;
 }
+
+#map {
+    height: 400px;
+    width: 100%;
+}
