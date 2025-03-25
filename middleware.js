@@ -2,6 +2,7 @@ const listing = require('./models/listing');
 const review = require('./models/review');
 const ExpressError = require('./utils/expressError.js');
 const { listingSchema, reviewSchema } = require('./schema.js');
+const axios = require('axios');
 
 module.exports.isLoggedIn = (req, res, next) => {
     if (!req.isAuthenticated()) {
@@ -56,5 +57,23 @@ module.exports.reviewListing = (req, res, next) => {
         throw new ExpressError(400, errMsg);
     } else {
         next();
+    }
+}
+
+module.exports.getCoordinates = async (location) => {
+    try {
+        const url = `https://nominatim.openstreetmap.org/search?q=${encodeURIComponent(location)}&format=json`;
+        const response = await axios.get(url, {
+            headers: { 'User-Agent': 'YourAppName' } // Required by Nominatim
+        });
+
+        if (response.data.length > 0) {
+            const { lat, lon } = response.data[0];
+            return [parseFloat(lat), parseFloat(lon)];
+        } else {
+            return { error: `No results found for ${location}` };
+        }
+    } catch (error) {
+        return { error: error.message };
     }
 }

@@ -101,6 +101,20 @@ textarea {
     text-decoration: underline;
 }
 
+/* index  */
+.filter {
+    cursor: pointer;
+    transition: all 0.3s ease-in-out;
+}
+
+.filter p {
+    font-size: 0.7rem;
+}
+
+.filter:hover {
+    color: black;
+}
+
 /* Card */
 .card {
     border: none !important;

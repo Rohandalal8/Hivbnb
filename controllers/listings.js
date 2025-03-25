@@ -1,5 +1,6 @@
 const listing = require('../models/listing');
 const moment = require('moment');
+const { getCoordinates } = require('../middleware.js');
 
 module.exports.index = async (req, res) => {
     const allListings = await listing.find({});
@@ -25,9 +26,12 @@ module.exports.showListing = async (req, res) => {
 module.exports.createListing = async (req, res, next) => {
     let url = req.file.path;
     let filename = req.file.filename;
+    const { location } = req.body.listing;
+    const coordinates = await getCoordinates(location);
     const newListing = new listing(req.body.listing);
     newListing.owner = req.user._id;
     newListing.image = { url, filename };
+    newListing.geometry = { type: 'Point', coordinates };
     await newListing.save();
     req.flash('success', `Your new listing "${newListing.title}" has been created. Start attracting guests now!`);
     res.redirect('/listings');

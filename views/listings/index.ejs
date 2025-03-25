@@ -1,5 +1,44 @@
 <% layout("/layouts/boilerplate") %>
 
+<div class="filters py-2 d-flex gap-md-4 gap-3 text-secondary overflow-x-hidden">
+  <div class="filter text-center">
+    <i class="fa-solid fa-fire fs-4"></i>
+    <p class="fw-medium">Trending</p>
+  </div>
+  <div class="filter text-center">
+    <i class="fa-solid fa-bed fs-4"></i>
+    <p class="fw-medium">Rooms</p>
+  </div>
+  <div class="filter text-center">
+    <i class="fa-solid fa-mountain-city fs-4"></i>
+    <p class="fw-medium">Iconic Cities</p>
+  </div>
+  <div class="filter text-center">
+    <i class="fa-solid fa-mountain fs-4"></i>
+    <p class="fw-medium">Mountains</p>
+  </div>
+  <div class="filter text-center">
+    <i class="fa-brands fa-fort-awesome fs-4"></i>
+    <p class="fw-medium">Castles</p>
+  </div>
+  <div class="filter text-center">
+    <i class="fa-solid fa-person-swimming fs-4"></i>
+    <p class="fw-medium">Amazing Pools</p>
+  </div>
+  <div class="filter text-center">
+    <i class="fa-solid fa-campground fs-4"></i>
+    <p class="fw-medium">Camping</p>
+  </div>
+  <div class="filter text-center">
+    <i class="fa-solid fa-cow fs-4"></i>
+    <p class="fw-medium">Farms</p>
+  </div>
+  <div class="filter text-center">
+    <i class="fa-regular fa-snowflake fs-4"></i>
+    <p class="fw-medium">Arctic</p>
+  </div>
+</div>
+
     <div class="row row-cols-1 row-cols-md-3 row-cols-lg-4 g-4">
       <% for (let listing of allListings) { %>
         <a href="/listings/<%= listing._id %>" class="text-decoration-none">
