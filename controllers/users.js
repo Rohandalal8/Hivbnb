@@ -6,7 +6,7 @@ module.exports.renderSignupForm = (req, res) => {
 
 module.exports.signup = async (req, res) => {
     try {
-        const {email, username, password } = req.body;
+        const { email, username, password } = req.body;
 
         const existingUser = await User.findOne({ email });
         if (existingUser) {

@@ -1,62 +1,94 @@
 <% layout("/layouts/boilerplate") %>
 
-<div class="filters py-2 d-flex gap-md-4 gap-3 text-secondary overflow-x-hidden">
-  <div class="filter text-center">
-    <i class="fa-solid fa-fire fs-4"></i>
-    <p class="fw-medium">Trending</p>
-  </div>
-  <div class="filter text-center">
-    <i class="fa-solid fa-bed fs-4"></i>
-    <p class="fw-medium">Rooms</p>
-  </div>
-  <div class="filter text-center">
-    <i class="fa-solid fa-mountain-city fs-4"></i>
-    <p class="fw-medium">Iconic Cities</p>
-  </div>
-  <div class="filter text-center">
-    <i class="fa-solid fa-mountain fs-4"></i>
-    <p class="fw-medium">Mountains</p>
-  </div>
-  <div class="filter text-center">
-    <i class="fa-brands fa-fort-awesome fs-4"></i>
-    <p class="fw-medium">Castles</p>
-  </div>
-  <div class="filter text-center">
-    <i class="fa-solid fa-person-swimming fs-4"></i>
-    <p class="fw-medium">Amazing Pools</p>
-  </div>
-  <div class="filter text-center">
-    <i class="fa-solid fa-campground fs-4"></i>
-    <p class="fw-medium">Camping</p>
-  </div>
-  <div class="filter text-center">
-    <i class="fa-solid fa-cow fs-4"></i>
-    <p class="fw-medium">Farms</p>
-  </div>
-  <div class="filter text-center">
-    <i class="fa-regular fa-snowflake fs-4"></i>
-    <p class="fw-medium">Arctic</p>
-  </div>
-</div>
-
-    <div class="row row-cols-1 row-cols-md-3 row-cols-lg-4 g-4">
-      <% for (let listing of allListings) { %>
-        <a href="/listings/<%= listing._id %>" class="text-decoration-none">
-          <div class="card">
-            <div class="card-img-top">
-              <img src="<%= listing.image.url %>" class="card-img" alt="Listing-image">
-            </div>
-            <div class="card-body px-0 py-2">
-              <p class="card-text"><b>
-                  <%= listing.title %>
-                </b> <br>
-                <small class="text-secondary location">
-                  <%= listing.location %>, <%= listing.country %>
-                </small> <br>
-                &#8377;<%= listing.price.toLocaleString("en-IN") %> <small>night</small>
-              </p>
-            </div>
-          </div>
-        </a>
-        <% } %>
+  <div class="row">
+    <div class=" col-md-8 filters py-2 d-flex gap-md-4 gap-3 text-secondary overflow-x-hidden">
+      <div class="filter text-center">
+        <i class="fa-solid fa-fire fs-4"></i>
+        <p class="fw-medium">Trending</p>
+      </div>
+      <div class="filter text-center">
+        <i class="fa-solid fa-bed fs-4"></i>
+        <p class="fw-medium">Rooms</p>
+      </div>
+      <div class="filter text-center">
+        <i class="fa-solid fa-mountain-city fs-4"></i>
+        <p class="fw-medium">Iconic Cities</p>
+      </div>
+      <div class="filter text-center">
+        <i class="fa-solid fa-mountain fs-4"></i>
+        <p class="fw-medium">Mountains</p>
+      </div>
+      <div class="filter text-center">
+        <i class="fa-brands fa-fort-awesome fs-4"></i>
+        <p class="fw-medium">Castles</p>
+      </div>
+      <div class="filter text-center">
+        <i class="fa-solid fa-person-swimming fs-4"></i>
+        <p class="fw-medium">Amazing Pools</p>
+      </div>
+      <div class="filter text-center">
+        <i class="fa-solid fa-campground fs-4"></i>
+        <p class="fw-medium">Camping</p>
+      </div>
+      <div class="filter text-center">
+        <i class="fa-solid fa-cow fs-4"></i>
+        <p class="fw-medium">Farms</p>
+      </div>
+      <div class="filter text-center">
+        <i class="fa-regular fa-snowflake fs-4"></i>
+        <p class="fw-medium">Arctic</p>
+      </div>
+      <div class="filter text-center">
+        <i class="fa-solid fa-igloo fs-4"></i>
+        <p class="fw-medium">Domes</p>
+      </div>
+      <div class="filter text-center">
+        <i class="fa-solid fa-ship fs-4"></i>
+        <p class="fw-medium">Boats</p>
+      </div>
     </div>
+
+    <div class="col-md-4 tax-toggle ms-auto">
+      <div class="form-check-reverse form-switch py-3">
+        <input class="form-check-input taxes-input " type="checkbox" role="switch" id="flexSwitchCheckDefault">
+        <label class="form-check-label taxes-label me-2" for="flexSwitchCheckDefault">Display Taxes</label>
+      </div>
+    </div>
+  </div>
+
+  <div class="row row-cols-1 row-cols-md-3 row-cols-lg-4 g-4">
+    <% for (let listing of allListings) { %>
+      <a href="/listings/<%= listing._id %>" class="text-decoration-none">
+        <div class="card">
+          <div class="card-img-top">
+            <img src="<%= listing.image.url %>" class="card-img" alt="Listing-image">
+          </div>
+          <div class="card-body px-0 py-2">
+            <p class="card-text"><b>
+                <%= listing.title %>
+              </b> <br>
+              <small class="text-secondary location">
+                <%= listing.location %>, <%= listing.country %>
+              </small> <br>
+              &#8377;<%= listing.price.toLocaleString("en-IN") %> <small>night</small>
+                <small class="tax-info">&nbsp;+ 18% GST</small>
+            </p>
+          </div>
+        </div>
+      </a>
+      <% } %>
+  </div>
+
+  <script>
+    let taxSwitch = document.getElementById('flexSwitchCheckDefault');
+    taxSwitch.addEventListener('click', () => {
+      let taxInfo = document.querySelectorAll('.tax-info');
+      for (let info of taxInfo) {
+        if (info.style.display != 'inline') {
+          info.style.display = 'inline';
+        } else {
+          info.style.display = 'none';
+        }
+      }
+    });
+  </script>

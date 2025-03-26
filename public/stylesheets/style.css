@@ -22,16 +22,19 @@ label {
     background-color: white;
 }
 
-input, textarea {
+input,
+textarea {
     border-color: lightgray !important;
 }
 
-input:focus, textarea:focus {
+input:focus,
+textarea:focus {
     box-shadow: none !important;
     border: 1px solid #222222 !important;
 }
 
-input::placeholder, textarea::placeholder {
+input::placeholder,
+textarea::placeholder {
     color: lightgray !important;
 }
 
@@ -54,6 +57,16 @@ textarea {
     background-color: white;
 }
 
+.navbar-nav .btn {
+    background-color: #fe424d !important;
+    color: white !important;
+    font-size: 1rem !important;
+    position: relative;
+    right: 2.8rem;
+    height: 2.1rem;
+    padding: 0.1rem 0.5rem !important;
+}
+
 .navbar-brand {
     display: flex;
     align-items: center;
@@ -64,22 +77,30 @@ textarea {
     font-size: 1.25rem !important;
 }
 
-.navbar-brand img{
+.navbar-brand img {
     height: 2.3rem;
 }
 
-.nav-link {
-    color: #222222 !important;
-    padding: 0.5rem !important;
-    border-radius: 5rem;
+.register {
+    color: #fe424d;
+    border-color: #fe424d !important;
 }
 
-.nav-link:hover {
-    background-color: rgba(211, 211, 211, 0.453);
+.login,
+.signup,
+.logout {
+    width: 75px;
+    text-align: center;
+    border-color: #fe424d !important;
+    color: #fe424d;
+    transition: all 0.3s ease-in-out;
 }
 
+.login:hover,
+.signup:hover,
 .logout:hover {
-    background-color: rgba(255, 0, 0, 0.215) !important;
+    background-color: #fe424d;
+    color: white;
 }
 
 .navbar-toggler {
@@ -92,12 +113,12 @@ textarea {
 }
 
 /* Footer  */
-.f-info-links a{
+.f-info-links a {
     color: #222222;
     text-decoration: none;
 }
 
-.f-info-links a:hover{
+.f-info-links a:hover {
     text-decoration: underline;
 }
 
@@ -113,6 +134,23 @@ textarea {
 
 .filter:hover {
     color: black;
+}
+
+.taxes-label {
+    position: relative;
+    top: 0rem;
+    left: 0rem;
+    padding: 0rem;
+    font-size: 1rem;
+    background-color: transparent;
+}
+
+.tax-info {
+    display: none;
+}
+
+#flexSwitchCheckDefault {
+    cursor: pointer;
 }
 
 /* Card */
@@ -153,7 +191,8 @@ textarea {
     border: none !important;
 }
 
-.fa-star, .dot {
+.fa-star,
+.dot {
     font-size: 0.5rem;
 }
 

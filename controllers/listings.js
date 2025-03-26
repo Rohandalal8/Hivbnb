@@ -51,11 +51,11 @@ module.exports.updateListing = async (req, res) => {
     const { id } = req.params;
     const Listing = await listing.findByIdAndUpdate(id, req.body.listing);
     if (typeof req.file !== 'undefined') {
-    let url = req.file.path;
-    let filename = req.file.filename;
-    Listing.image = { url, filename };
-    await Listing.save();
-   }
+        let url = req.file.path;
+        let filename = req.file.filename;
+        Listing.image = { url, filename };
+        await Listing.save();
+    }
     req.flash('success', `Your listing has been updated successfully!`);
     res.redirect(`/listings/${id}`);
 }

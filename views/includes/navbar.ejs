@@ -4,15 +4,26 @@
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup">
             <span class="navbar-toggler-icon"></span>
         </button>
+
         <div class="collapse navbar-collapse bg-light" id="navbarNavAltMarkup">
+            <div class="navbar-nav ms-auto">
+                <form class="d-flex align-items-center" role="search">
+                    <input class="form-control me-2 rounded-pill " type="search" placeholder="Search Destinations"
+                        aria-label="Search">
+                    <button class="btn rounded-circle" type="submit"><i
+                            class="fa-solid fa-magnifying-glass"></i></button>
+                </form>
+            </div>
             <div class="navbar-nav ms-auto">
                 <a class="nav-link fw-semibold" href="/listings/new">Hivbnb your home</a>
                 <% if (!currentUser) { %>
-                <a class="nav-link fw-semibold" href="/login">Log in</a>
-                <a class="nav-link fw-semibold" href="/signup">Sign up</a>
-                <% } else { %>
-                <a class="nav-link logout" href="/logout">Logout</a>
-                <% } %>
+                    <div class="border rounded-pill  d-flex overflow-hidden register">
+                        <a class="nav-link fw-semibold border-end border-white login" href="/login">Log in</a>
+                        <a class="nav-link fw-semibold signup" href="/signup">Sign up</a>
+                    </div>
+                    <% } else { %>
+                        <a class="nav-link logout rounded-pill border logout" href="/logout">Logout</a>
+                        <% } %>
             </div>
         </div>
     </div>
