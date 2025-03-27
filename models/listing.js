@@ -1,7 +1,8 @@
 const mongoose = require('mongoose');
 const review = require('./review.js');
 
-const MONGO_URL = 'mongodb://127.0.0.1:27017/Hivbnb';
+// const MONGO_URL = 'mongodb://127.0.0.1:27017/Hivbnb';
+const dbUrl = process.env.ATLASDB_URL;
 
 main()
     .then(() => {
@@ -12,7 +13,7 @@ main()
     });
 
 async function main() {
-    await mongoose.connect(MONGO_URL);
+    await mongoose.connect(dbUrl);
 }
 
 const listingSchema = new mongoose.Schema({
