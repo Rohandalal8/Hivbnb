@@ -11,7 +11,7 @@ const storage = new CloudinaryStorage({
     cloudinary: cloudinary,
     params: {
         folder: 'hivbnb_DEV',
-        allowed_formats: ['jpg', 'png', 'jpeg'],
+        allowed_formats: ['jpg', 'png', 'jpeg', 'avif'],
     },
 });
 
