@@ -4,6 +4,7 @@ if (process.env.NODE_ENV != 'production') {
 
 const express = require('express');
 const app = express();
+const mongoose = require('mongoose');
 const methodOverride = require('method-override');
 const ejsMate = require('ejs-mate');
 const ExpressError = require('./utils/expressError.js');
@@ -18,6 +19,18 @@ const listingRouter = require('./routes/listing.js');
 const reviewRouter = require('./routes/review.js');
 const userRouter = require('./routes/user.js');
 
+// MongoDB Connection
+// For Render deployment: const dbUrl = process.env.ATLASDB_URL;
+const dbUrl = process.env.MONGO_URL || 'mongodb://127.0.0.1:27017/Hivbnb';
+
+mongoose.connect(dbUrl)
+    .then(() => {
+        console.log('Connected to MongoDB');
+    })
+    .catch(err => {
+        console.log('Error connecting to MongoDB: ', err);
+    });
+
 app.set('view engine', 'ejs');
 app.use(express.urlencoded({ extended: true }));
 app.use(methodOverride('_method'));
@@ -25,7 +38,8 @@ app.engine('ejs', ejsMate);
 app.use(express.static('public'));
 
 const store = mongoStore.create({
-    mongoUrl: process.env.ATLASDB_URL,
+    // For Render deployment: mongoUrl: process.env.ATLASDB_URL,
+    mongoUrl: process.env.MONGO_URL || 'mongodb://127.0.0.1:27017/Hivbnb',
     crypto: {
         secret: process.env.SECRET,
     },

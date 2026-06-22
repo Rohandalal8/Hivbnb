@@ -1,20 +1,21 @@
 const mongoose = require('mongoose');
 const review = require('./review.js');
 
+// MongoDB connection is now handled in app.js
 // const MONGO_URL = 'mongodb://127.0.0.1:27017/Hivbnb';
-const dbUrl = process.env.ATLASDB_URL;
+// const dbUrl = process.env.ATLASDB_URL;
 
-main()
-    .then(() => {
-        console.log('Connected to MongoDB');
-    })
-    .catch(err => {
-        console.log('Error connecting to MongoDB: ', err);
-    });
+// main()
+//     .then(() => {
+//         console.log('Connected to MongoDB');
+//     })
+//     .catch(err => {
+//         console.log('Error connecting to MongoDB: ', err);
+//     });
 
-async function main() {
-    await mongoose.connect(dbUrl);
-}
+// async function main() {
+//     await mongoose.connect(MONGO_URL);
+// }
 
 const listingSchema = new mongoose.Schema({
     title: {
