@@ -1,4 +1,4 @@
-const listing = require('../models/listing');
+const listing = require('../models/listingModel.js');
 const moment = require('moment');
 const { getCoordinates } = require('../middleware.js');
 
