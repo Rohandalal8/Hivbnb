@@ -1,19 +1,19 @@
 const User = require('../models/userModel');
+const firebaseAdmin = require('../config/firebaseAdmin');
 
 const protect = async (req, res, next) => {
-    let token;
-    if (req.headers.authorization && req.headers.authorization.startsWith('Bearer')) {
         try {
-            token = req.headers.authorization.split(' ')[1];
-            const decoded = jwt.verify(token, process.env.JWT_SECRET);
-            const currentUser = await User.findById(decoded.id).select('-password');
+            const authHeader = req.headers.authorization;
+            if (!authHeader || !authHeader.startsWith('Bearer ')) {
+                return res.status(401).json({ message: 'Not authorized, no token' });
+            }
+            const token = authHeader.split(' ')[1];
+            const decoded = await firebaseAdmin.auth().verifyIdToken(token);
+            req.firebaseUser = decoded;
             next();
         } catch (err) {
             return res.status(401).json({ message: 'Not authorized, token failed' });
         }
-    } else {
-        return res.status(401).json({ message: 'Not authorized, no token' });
-    }
 };
 
 module.exports = { protect };
