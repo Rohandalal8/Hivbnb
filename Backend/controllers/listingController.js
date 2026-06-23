@@ -1,6 +1,5 @@
 const listing = require('../models/listingModel.js');
-const moment = require('moment');
-const { getCoordinates } = require('../middleware.js');
+const { getCoordinates } = require('../middlewares/coordinatesMiddleware.js');
 
 module.exports.index = async (req, res) => {
     const allListings = await listing.find({});
