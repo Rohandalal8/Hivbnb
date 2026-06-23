@@ -1,88 +1,60 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { auth } from "../firebase";
-import { signInWithEmailAndPassword, GoogleAuthProvider, signInWithPopup, sendEmailVerification, sendPasswordResetEmail } from "firebase/auth";
+import { createUserWithEmailAndPassword, GoogleAuthProvider, signInWithPopup, sendEmailVerification } from "firebase/auth";
 import { toast } from "react-toastify";
 import { FcGoogle } from "react-icons/fc";
 import "../styles/auth.css";
 
-const Login = () => {
+const Register = () => {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
+    const [name, setName] = useState("");
     const [loading, setLoading] = useState(false);
     const navigate = useNavigate();
 
-    const loginUser = async (e) => {
+    const registerUser = async (e) => {
         e.preventDefault();
         setLoading(true);
 
         try {
-            const userCredential = await signInWithEmailAndPassword(
+            const userCredential = await createUserWithEmailAndPassword(
                 auth,
                 email,
                 password
             );
-            if (!userCredential.user.emailVerified) {
-                await sendEmailVerification(userCredential.user);
-                toast.warning("Please verify your email. A verification link has been sent to your email address.");
-                navigate("/verify-email");
-                setLoading(false);
-                return;
-            }
-            toast.success("Login Successful");
-            navigate("/");
+            await sendEmailVerification(userCredential.user);
+            navigate("/verify-email");
+            toast.success("Verification email sent. Please check your inbox or spam folder.");
         } catch (error) {
             console.error(error);
             switch (error.code) {
-                case "auth/invalid-credential":
-                    toast.error("Invalid email or password");
-                    break;
 
-                case "auth/user-not-found":
-                    toast.error("No account found with this email");
-                    break;
-
-                case "auth/wrong-password":
-                    toast.error("Incorrect password");
+                case "auth/email-already-in-use":
+                    toast.error("An account with this email already exists");
                     break;
 
                 case "auth/invalid-email":
                     toast.error("Please enter a valid email address");
                     break;
 
-                case "auth/too-many-requests":
-                    toast.error("Too many failed attempts. Please try again later");
+                case "auth/weak-password":
+                    toast.error("Password must be at least 6 characters long");
                     break;
 
                 case "auth/network-request-failed":
                     toast.error("Network error. Check your internet connection");
                     break;
 
+                case "auth/too-many-requests":
+                    toast.error("Too many attempts. Please try again later");
+                    break;
+
                 default:
-                    toast.error("Something went wrong. Please try again");
+                    toast.error("Registration failed. Please try again");
             }
         } finally {
             setLoading(false);
-        }
-    };
-
-    const forgotPassword = async () => {
-        if (!email) {
-            toast.error("Please enter your email first");
-            return;
-        }
-
-        try {
-            await sendPasswordResetEmail(auth, email);
-            toast.success("Password reset email sent. Check Inbox or Spam folder.");
-        } catch (error) {
-            console.error(error);
-
-            if (error.code === "auth/user-not-found") {
-                toast.error("No account found with this email");
-            } else {
-                toast.error(error.message);
-            }
         }
     };
 
@@ -129,7 +101,14 @@ const Login = () => {
     return (
         <div className="auth-container">
             <form className="auth-form">
-                <h2>Login</h2>
+                <h2>Register</h2>
+                <input
+                    type="text"
+                    placeholder="Full Name"
+                    value={name}
+                    onChange={(e) => setName(e.target.value)}
+                    required
+                />
                 <input
                     type="email"
                     placeholder="Email"
@@ -145,21 +124,17 @@ const Login = () => {
                     required
                 />
 
-                <button type="button" className="empty-btn" onClick={forgotPassword} disabled={loading}>
-                    Forgot Password?
-                </button>
-
-                <button className="btn" onClick={loginUser} disabled={loading}>
-                    {loading ? 'Logging in...' : 'Login'}
+                <button className="btn" onClick={registerUser} disabled={loading}>
+                    {loading ? 'Registering...' : 'Register'}
                 </button>
 
                 <button className="empty-btn" style={{ display: "flex", alignItems: "center", gap: "8px", justifyContent: "center" }} onClick={googleLogin} disabled={loading}>
-                    <FcGoogle size={20} /> Login with Google
+                    <FcGoogle size={20} /> Register with Google
                 </button>
-                <p>Don't have an account? <Link to="/register">Register here</Link></p>
+                <p>Already have an account? <Link to="/login">Login here</Link></p>
             </form>
         </div>
     );
 }
 
-export default Login;
+export default Register;

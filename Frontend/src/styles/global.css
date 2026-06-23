@@ -1,0 +1,142 @@
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap');
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Outfit', sans-serif;
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+body {
+    background: #fff;
+    min-height: 100vh;
+    overflow-x: hidden;
+    display: flex;
+    flex-direction: column;
+}
+
+.scrollbar {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+}
+
+.scrollbar::-webkit-scrollbar {
+    display: none;
+}
+
+/* buttons */
+.btn {
+    cursor: pointer;
+    border: 1px solid #fe424d;
+    outline: none;
+    background: #fe424d;
+    color: #fff;
+    padding: 0.5rem 1rem;
+    border-radius: 4px;
+    font-size: 1rem;
+    font-weight: 400;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    box-shadow: 0 4px 14px rgba(254, 66, 77, 0.3);
+    display: inline-block;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+}
+
+.btn::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+    transition: left 0.5s ease;
+}
+
+.btn:hover {
+    box-shadow: 0 6px 20px rgba(254, 66, 77, 0.5);
+    filter: brightness(1.15);
+}
+
+.btn:hover::before {
+    left: 100%;
+}
+
+.empty-btn {
+    background: none;
+    color: #fe424d;
+    border: 1px solid #fe424d;
+    padding: 0.5rem 1rem;
+    border-radius: 4px;
+    font-size: 1rem;
+    font-weight: 400;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    display: inline-block;
+    text-align: center;
+}
+
+.empty-btn:hover {
+    background: #fe424d;
+    color: #fff;
+    box-shadow: 0 6px 20px rgba(254, 66, 77, 0.5);
+    filter: brightness(1.15);
+}
+
+/* headings */
+h1, h2, h3, h4 {
+    font-weight: 400;
+    margin-bottom: 15px;
+}
+
+h2 {
+    font-size: 1.5rem;
+    background: linear-gradient(to right, #ff424d, #ff7f7f);
+    background-clip: text;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+a {
+    text-decoration: none;
+    color: #fe424d;
+}
+
+a:hover {
+    text-decoration: underline;
+}
+
+.container {
+    width: 100%;
+    margin: 0 auto;
+    padding: 15px;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+::-webkit-scrollbar {
+    width: 4px;
+}
+::-webkit-scrollbar-track {
+    background: #09090b;
+}
+::-webkit-scrollbar-thumb {
+    background: #27272a;
+    border-radius: 10px;
+}
+::-webkit-scrollbar-thumb:hover {
+    background: #fe424f74;
+}
