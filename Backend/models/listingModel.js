@@ -41,7 +41,7 @@ const listingSchema = new mongoose.Schema({
         type: Number,
         default: 0
     },
-    owner: {
+    ownerId: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'User',
         required: true
