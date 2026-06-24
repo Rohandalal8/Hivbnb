@@ -15,4 +15,4 @@ const owner = async (req, res, next) => {
     return res.status(403).json({ message: 'Access denied. Owners only.' });
 };
 
-module.exports = owner;
+module.exports = { owner };

@@ -4,6 +4,7 @@ import { auth } from "../firebase";
 import { createUserWithEmailAndPassword, GoogleAuthProvider, signInWithPopup, sendEmailVerification } from "firebase/auth";
 import { toast } from "react-toastify";
 import { FcGoogle } from "react-icons/fc";
+import api from "../api/axios";
 import "../styles/auth.css";
 
 const Register = () => {
@@ -24,6 +25,11 @@ const Register = () => {
                 password
             );
             await sendEmailVerification(userCredential.user);
+            await api.post(`/auth/register`, {
+                firebaseUid: userCredential.user.uid,
+                name,
+                email
+            });
             navigate("/verify-email");
             toast.success("Verification email sent. Please check your inbox or spam folder.");
         } catch (error) {
@@ -66,8 +72,14 @@ const Register = () => {
                 auth,
                 provider
             );
-            toast.success("Google Login Successful");
 
+            await api.post(`/auth/register`, {
+                firebaseUid: result.user.uid,
+                name: result.user.displayName,
+                email: result.user.email
+            });
+            toast.success("Google Login Successful");
+            navigate("/");
         } catch (error) {
             console.error(error);
             switch (error.code) {

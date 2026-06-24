@@ -1,0 +1,27 @@
+{
+  "name": "hivbnb",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "client": "cd Frontend && npm run dev",
+    "server": "cd Backend && npm run dev",
+    "dev": "concurrently \"npm run server\" \"npm run client\""
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Rohandalal8/Hivbnb.git"
+  },
+  "keywords": [],
+  "author": "Rohan",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/Rohandalal8/Hivbnb/issues"
+  },
+  "homepage": "https://github.com/Rohandalal8/Hivbnb#readme",
+  "dependencies": {
+    "concurrently": "^10.0.3"
+  }
+}

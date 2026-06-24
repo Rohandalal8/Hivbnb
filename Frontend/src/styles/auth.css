@@ -55,7 +55,7 @@
 .auth-form input, .auth-form textarea {
   padding: 15px;
   background: #fff;
-  border: 1px solid #fe424d;
+  border: 1px solid #a1a1aa;
   border-radius: 4px;
   font-size: 15px;
   outline: none;
@@ -63,5 +63,30 @@
 }
 
 .auth-form input:focus, .auth-form textarea:focus {
-  box-shadow: 0 0 0 2px rgba(254, 66, 77, 0.2);
+  border-color: black;  
+  box-shadow: 0 0 0 2px rgba(161, 161, 170, 0.2);
+}
+
+.divider {
+    display: flex;
+    align-items: center;
+    text-align: center;
+    color: #a1a1aaac;
+    font-size: 0.9rem;
+}
+
+.divider::before,
+.divider::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: #a1a1aaac;
+}
+
+.divider::before {
+    margin-right: 6px;
+}
+
+.divider::after {
+    margin-left: 6px;
 }

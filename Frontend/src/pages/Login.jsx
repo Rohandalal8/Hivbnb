@@ -95,7 +95,7 @@ const Login = () => {
                 provider
             );
             toast.success("Google Login Successful");
-
+            navigate("/");
         } catch (error) {
             console.error(error);
             switch (error.code) {
@@ -145,7 +145,7 @@ const Login = () => {
                     required
                 />
 
-                <button type="button" className="empty-btn" onClick={forgotPassword} disabled={loading}>
+                <button type="button" onClick={forgotPassword} disabled={loading} style={{ background: "none", color: "#1542f7", border: "none", cursor: "pointer", marginTop: "-15px", textAlign: "left" }} >
                     Forgot Password?
                 </button>
 
@@ -153,10 +153,16 @@ const Login = () => {
                     {loading ? 'Logging in...' : 'Login'}
                 </button>
 
-                <button className="empty-btn" style={{ display: "flex", alignItems: "center", gap: "8px", justifyContent: "center" }} onClick={googleLogin} disabled={loading}>
-                    <FcGoogle size={20} /> Login with Google
+                <p style={{ fontSize: "0.9rem", marginTop: "-10px" }}>
+                    Don't have an account? <Link to="/register">Register here</Link>
+                </p>
+
+                <p className="divider">OR</p>
+
+                <button className="empty-btn" onClick={googleLogin} disabled={loading} style={{ display: "flex", alignItems: "center", gap: "6px", justifyContent: "center" }}>
+                    <FcGoogle size={20} /> Sign in with Google
                 </button>
-                <p>Don't have an account? <Link to="/register">Register here</Link></p>
+                
             </form>
         </div>
     );

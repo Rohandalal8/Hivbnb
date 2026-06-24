@@ -1,7 +1,7 @@
 const express = require('express');
-const { protect } = require('../middleware/authMiddleware');
-const { owner } = require('../middleware/ownerMiddleware');
-const { createListing, getListings, getListingById, updateListing, deleteListing, addListingReview } = require('../controllers/listingController');
+const { protect } = require('../middlewares/authMiddleware');
+const { owner } = require('../middlewares/ownerMiddleware');
+const { createListing, getListings, getListingById, updateListing, deleteListing, getWishlistListings, addListingReview } = require('../controllers/listingController');
 const multer = require('multer');
 
 const storage = multer.memoryStorage();
