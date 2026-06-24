@@ -36,38 +36,43 @@ const VerifyEmail = () => {
                 );
             }
         } catch (error) {
-            toast.error(error.message);
+            console.error(error);
+            switch (error.code) {
+                case 'auth/too-many-requests':
+                    toast.error('Too many requests. Please try again later.');
+                    break;
+
+                case 'auth/network-request-failed':
+                    toast.error('Network error. Check your internet connection.');
+                    break;
+
+                case 'auth/user-not-found':
+                    toast.error('User not found. Please register first.');
+                    break;
+
+                default:
+                    toast.error('Failed to send verification email. Please try again.');
+            }
         } finally {
             setLoading(false);
         }
     };
 
     return (
-        <div className="container">
-            <div className="verify-card">
+        <div className="container" style={{ maxWidth: '500px'}}>
+            <div >
                 <h2>Verify Your Email</h2>
 
-                <p>
-                    We have sent a verification link to:
+                <p style={{ color: '#000000c4', fontSize: '0.9rem', margin: '10px 0'}}>
+                    We have sent a verification link to: <span style={{ color: '#000' }}>{auth.currentUser?.email}</span>
                 </p>
 
-                <strong>
-                    {auth.currentUser?.email}
-                </strong>
-
-                <p>
-                    Please check your Inbox or Spam folder and click
-                    the verification link.
+                <p style={{ color: '#000000c4', fontSize: '0.9rem', margin: '10px 0'}}>
+                    Please check your Inbox or Spam folder and click the verification link.
                 </p>
 
-                <button
-                    className="btn"
-                    onClick={resendEmail}
-                    disabled={loading}
-                >
-                    {loading
-                        ? 'Sending...'
-                        : 'Resend Verification Email'}
+                <button className="btn" onClick={resendEmail} disabled={loading}>
+                    {loading ? 'Sending...' : 'Resend Verification Email'}
                 </button>
             </div>
         </div>

@@ -139,11 +139,14 @@ const Register = () => {
                 <button className="btn" onClick={registerUser} disabled={loading}>
                     {loading ? 'Registering...' : 'Register'}
                 </button>
+                <p style={{ fontSize: '0.9rem', marginTop:'-10px'}}>Already have an account? <Link to="/login">Login here</Link></p>
+
+                <p className="divider">OR</p>
 
                 <button className="empty-btn" style={{ display: "flex", alignItems: "center", gap: "8px", justifyContent: "center" }} onClick={googleLogin} disabled={loading}>
                     <FcGoogle size={20} /> Register with Google
                 </button>
-                <p>Already have an account? <Link to="/login">Login here</Link></p>
+                
             </form>
         </div>
     );

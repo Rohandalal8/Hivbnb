@@ -1,12 +1,18 @@
 const Listing = require('../models/listingModel.js');
 const Review = require('../models/reviewModel.js');
+const User = require('../models/userModel.js')
 const { getCoordinates } = require('../middlewares/coordinatesMiddleware.js');
 const { cloudinary, uploadToCloudinary } = require('../config/cloudinary.js');
 
 // Get all listings
 const getListings = async (req, res) => {
     try {
-        const listings = await Listing.find({}).populate('ownerId');
+        const { city } = req.query;
+        let filter = {};
+        if (city) {
+            filter.city = city;
+        }
+        const listings = await Listing.find(filter).populate('ownerId');
         res.json(listings);
     } catch (error) {
         res.status(500).json({ message: 'Error fetching listings', error });
@@ -32,7 +38,7 @@ const getListingById = async (req, res) => {
 // Create a new listing
 const createListing = async (req, res) => {
     try {
-        const { name, description, price, discount, street, city, country } = req.body;
+        const { name, description, guests, bedrooms, beds, bathrooms, price, discount, street, city, country } = req.body;
         let imageUrls = [];
         if (req.files && req.files.length > 0) {
             for (const file of req.files) {
@@ -46,6 +52,10 @@ const createListing = async (req, res) => {
         const listing = new Listing({
             name,
             description,
+            guests,
+            bedrooms,
+            beds,
+            bathrooms,
             price,
             discount,
             street,
@@ -65,12 +75,16 @@ const createListing = async (req, res) => {
 // Update an existing listing
 const updateListing = async (req, res) => {
     try {
-        const { name, description, price, discount, street, city, country } = req.body;
+        const { name, description, guests, bedrooms, beds, bathrooms, price, discount, street, city, country } = req.body;
         const listing = await Listing.findById(req.params.id);
 
         if (listing) {
             listing.name = name || listing.name;
             listing.description = description || listing.description;
+            listing.guests = guests || listing.guests;
+            listing.bedrooms = bedrooms || listing.bedrooms;
+            listing.beds = beds || listing.beds;
+            listing.bathrooms = bathrooms || listing.bathrooms;
             listing.price = price || listing.price;
             listing.discount = discount || listing.discount;
             listing.street = street || listing.street;
@@ -112,15 +126,54 @@ const deleteListing = async (req, res) => {
     }
 };
 
-//get wishlist listings
-const getWishlistListings = async (req, res) => {
+//Add or remove a listing from the user's wishlist
+const toggleWishlist = async (req, res) => {
     try {
-        const { ids } = req.body;
-        const listings = await Listing.find({ _id: { $in: ids } }).populate('ownerId');
-        res.json(listings);
+
+        const { listingId } = req.params;
+
+        const user = await User.findOne({firebaseUid: req.firebaseUser.uid});
+
+        if (!user) {
+            return res.status(404).json({message: "User not found"});
+        }
+
+        const exists = user.wishlist.some(id => id.toString() === listingId);
+
+        if (exists) {
+
+            user.wishlist = user.wishlist.filter(id => id.toString() !== listingId);
+
+            await user.save();
+
+            return res.status(200).json({message: "Removed from wishlist", wishlist: user.wishlist});
+        }
+
+        user.wishlist.push(listingId);
+
+        await user.save();
+
+        res.status(200).json({message: "Added to wishlist", wishlist: user.wishlist});
+
+    } catch (error) {
+        res.status(500).json({message: error.message});
     }
-    catch (error) {
-        res.status(500).json({ message: 'Error fetching wishlist listings', error });
+};
+
+//get wishlist listings
+const getWishlist = async (req, res) => {
+    try {
+
+        const user = await User.findOne({firebaseUid: req.firebaseUser.uid}).populate("wishlist");
+
+        if (!user) {
+            return res.status(404).json({message: "User not found"});
+        }
+
+        res.status(200).json(user.wishlist);
+
+    } catch (error) {
+        res.status(500).json({message: error.message});
     }
 };
 
@@ -152,6 +205,7 @@ module.exports = {
     createListing,
     updateListing,
     deleteListing,
-    addListingReview,
-    getWishlistListings
+    toggleWishlist,
+    getWishlist,
+    addListingReview
 };

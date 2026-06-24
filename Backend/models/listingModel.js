@@ -9,6 +9,22 @@ const listingSchema = new mongoose.Schema({
         type: String,
         required: true
     },
+    guests: {
+        type: Number,
+        required: true
+    },
+    bedrooms: {
+        type: Number,
+        required: true
+    },
+    beds: {
+        type: Number,
+        required: true
+    },
+    bathrooms: {
+        type: Number,
+        required: true
+    },
     imageUrls: [{
         filename: String,
         url: String
