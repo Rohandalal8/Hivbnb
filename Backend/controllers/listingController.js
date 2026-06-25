@@ -10,9 +10,13 @@ const getListings = async (req, res) => {
         const { city } = req.query;
         let filter = {};
         if (city) {
-            filter.city = city;
+            filter.city = { $regex: `^${city}`, $options: 'i' };
         }
-        const listings = await Listing.find(filter).populate('ownerId');
+        const listings = await Listing.find(filter)
+            .populate('ownerId')
+            .sort({ rating: -1 }) // Sort by rating in descending order
+            .limit(10); // Limit to 10 results
+
         res.json(listings);
     } catch (error) {
         res.status(500).json({ message: 'Error fetching listings', error });
@@ -49,7 +53,6 @@ const createListing = async (req, res) => {
         const location = `${street}, ${city}, ${country}`;
         const coordinates = await getCoordinates(location);
         const user = await User.findOne({ email: req.firebaseUser.email });
-        
 
         const listing = new Listing({
             name,
@@ -135,10 +138,10 @@ const toggleWishlist = async (req, res) => {
 
         const { listingId } = req.params;
 
-        const user = await User.findOne({firebaseUid: req.firebaseUser.uid});
+        const user = await User.findOne({ firebaseUid: req.firebaseUser.uid });
 
         if (!user) {
-            return res.status(404).json({message: "User not found"});
+            return res.status(404).json({ message: "User not found" });
         }
 
         const exists = user.wishlist.some(id => id.toString() === listingId);
@@ -149,17 +152,17 @@ const toggleWishlist = async (req, res) => {
 
             await user.save();
 
-            return res.status(200).json({message: "Removed from wishlist", wishlist: user.wishlist});
+            return res.status(200).json({ message: "Removed from wishlist", wishlist: user.wishlist });
         }
 
         user.wishlist.push(listingId);
 
         await user.save();
 
-        res.status(200).json({message: "Added to wishlist", wishlist: user.wishlist});
+        res.status(200).json({ message: "Added to wishlist", wishlist: user.wishlist });
 
     } catch (error) {
-        res.status(500).json({message: error.message});
+        res.status(500).json({ message: error.message });
     }
 };
 
@@ -167,16 +170,16 @@ const toggleWishlist = async (req, res) => {
 const getWishlist = async (req, res) => {
     try {
 
-        const user = await User.findOne({firebaseUid: req.firebaseUser.uid}).populate("wishlist");
+        const user = await User.findOne({ firebaseUid: req.firebaseUser.uid }).populate("wishlist");
 
         if (!user) {
-            return res.status(404).json({message: "User not found"});
+            return res.status(404).json({ message: "User not found" });
         }
 
         res.status(200).json(user.wishlist);
 
     } catch (error) {
-        res.status(500).json({message: error.message});
+        res.status(500).json({ message: error.message });
     }
 };
 

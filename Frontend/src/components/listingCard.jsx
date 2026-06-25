@@ -1,0 +1,31 @@
+import { Link } from "react-router-dom";
+import "../styles/listing.css";
+
+const ListingCard = ({ listing }) => {
+
+    const discountedPrice = listing.price - (listing.price * listing.discount / 100);
+
+    return (
+        <Link to={`/product/${listing._id}`}>
+            <div className="listing-card">
+                <img src={listing.imageUrls?.[0]} alt={listing.name} className="listing-image" />
+                <div className="listing-info">
+                    <p style={{color: '#000'}}>{listing.name} in {listing.city}</p>
+                    {listing.discount > 0 ? (
+                        <div style={{ display: 'flex', alignItems: 'baseline', gap: '3px' }}>
+                            <p style={{ color: '#80808b' }}>
+                                ₹{discountedPrice.toFixed(2) * 2} for 2 nights ★ {listing.numReviews}
+                            </p>
+                        </div>
+                    ) : (
+                        <p style={{color: '#80808b'}}>
+                            ₹{listing.price.toFixed(2) * 2} for 2 nights ★ {listing.numReviews}
+                        </p>
+                    )}
+                </div>
+            </div>
+        </Link>
+    );
+};
+
+export default ListingCard;
