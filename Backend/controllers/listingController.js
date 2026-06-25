@@ -48,6 +48,8 @@ const createListing = async (req, res) => {
         }
         const location = `${street}, ${city}, ${country}`;
         const coordinates = await getCoordinates(location);
+        const user = await User.findOne({ email: req.firebaseUser.email });
+        
 
         const listing = new Listing({
             name,
@@ -62,12 +64,13 @@ const createListing = async (req, res) => {
             city,
             country,
             imageUrls,
-            ownerId: req.user._id,
+            ownerId: user._id, // Assuming the User ID is stored in the user document
             geometry: { type: 'Point', coordinates }
         });
         const createdListing = await listing.save();
         res.status(201).json(createdListing);
     } catch (error) {
+        console.error("Error creating listing:", error); // Debugging line
         res.status(500).json({ message: 'Error creating listing', error });
     }
 }

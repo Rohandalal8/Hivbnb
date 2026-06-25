@@ -11,6 +11,7 @@ import Footer from "./components/footer";
 import About from "./pages/About";
 import ReturnPolicy from "./pages/ReturnPolicy";
 import Disclaimer from "./pages/Disclaimer";
+import AddListing from "./pages/AddListing";
 
 function App() {
   return (
@@ -25,6 +26,7 @@ function App() {
         <Route path="/about" element={<About />} />
         <Route path="/return" element={<ReturnPolicy />} />
         <Route path="/disclaimer" element={<Disclaimer />} />
+        <Route path="/add-listing" element={<AddListing />} />
       </Routes>
       <Footer />
     </Router>

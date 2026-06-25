@@ -40,27 +40,87 @@ const Home = () => {
 
   return (
     <div className="container" style={{ maxWidth: '1600px', margin: '0 auto', padding: '15px' }}>
+      <div>
         <input
-            type="text"
-            placeholder="Search City..."
-            value={search}
-            onChange={(e) => setSearch(e.target.value)}
-            className="search-bar"
+          type="text"
+          placeholder="Search City..."
+          value={search}
+          onChange={(e) => setSearch(e.target.value)}
+          className="search-bar"
         />
         <select
-            value={sortBy}
-            onChange={(e) => setSortBy(e.target.value)}
-            className="search-bar"
-          >
-            <option value="selling">Filter</option>
-            <option value="discount">High to Low</option>
-            <option value="recent">Low to High</option>
-            <option value="price">Most Discounted</option>
-            <option value="name">Most Rated</option>
-          </select>
-        <Link to="/register">Register</Link>
-        <br />
-        <Link to="/login">Login</Link>
+          value={sortBy}
+          onChange={(e) => setSortBy(e.target.value)}
+          className="search-bar"
+        >
+          <option value="selling">Filter</option>
+          <option value="discount">High to Low</option>
+          <option value="recent">Low to High</option>
+          <option value="price">Most Discounted</option>
+          <option value="name">Most Rated</option>
+        </select>
+      </div>
+
+      <h2>Available in Dehradun</h2>
+      <div className="listing-cards">
+        {dehradun.map((listing) => (
+          <div key={listing._id} className="listing-card">
+            <img src={listing.image} alt={listing.title} />
+            <h3>{listing.title}</h3>
+            <p>{listing.description}</p>
+            <p>Price: ${listing.price}</p>
+          </div>
+        ))}
+      </div>
+
+      <h2>Stay in Goa</h2>
+      <div className="listing-cards">
+        {goa.map((listing) => (
+          <div key={listing._id} className="listing-card">
+            <img src={listing.image} alt={listing.title} />
+            <h3>{listing.title}</h3>
+            <p>{listing.description}</p>
+            <p>Price: ${listing.price}</p>
+          </div>
+        ))}
+      </div>
+
+      <h2>Places to stay in Manali</h2>
+      <div className="listing-cards">
+        {manali.map((listing) => (
+          <div key={listing._id} className="listing-card">
+            <img src={listing.image} alt={listing.title} />
+            <h3>{listing.title}</h3>
+            <p>{listing.description}</p>
+            <p>Price: ${listing.price}</p>
+          </div>
+        ))}
+      </div>
+
+      <h2>Homes in Rishikesh</h2>
+      <div className="listing-cards">
+        {rishikesh.map((listing) => (
+          <div key={listing._id} className="listing-card">
+            <img src={listing.image} alt={listing.title} />
+            <h3>{listing.title}</h3>
+            <p>{listing.description}</p>
+            <p>Price: ${listing.price}</p>
+          </div>
+        ))}
+      </div>
+
+      <h2>Checkout Homes in Mussoorie</h2>
+      <div className="listing-cards">
+        {mussoorie.map((listing) => (
+          <div key={listing._id} className="listing-card">
+            <img src={listing.image} alt={listing.title} />
+            <h3>{listing.title}</h3>
+            <p>{listing.description}</p>
+            <p>Price: ${listing.price}</p>
+          </div>
+        ))}
+      </div>
+
     </div>
   );
 }

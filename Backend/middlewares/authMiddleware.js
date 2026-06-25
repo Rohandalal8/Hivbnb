@@ -8,7 +8,7 @@ const protect = async (req, res, next) => {
                 return res.status(401).json({ message: 'Not authorized, no token' });
             }
             const token = authHeader.split(' ')[1];
-            const decoded = await firebaseAdmin.auth().verifyIdToken(token);
+            const decoded = await firebaseAdmin.auth.verifyIdToken(token);
             req.firebaseUser = decoded;
             next();
         } catch (err) {
