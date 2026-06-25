@@ -1,6 +1,7 @@
 import { useEffect, useState, useContext } from "react";
 import { Link } from "react-router-dom";
 import ListingCard from "../components/listingCard";
+import Loader from "../components/loader";
 import { AuthContext } from "../context/authContext";
 import api from "../api/axios";
 import "../styles/home.css";
@@ -65,7 +66,7 @@ const Home = () => {
 
       <h2>Available in Dehradun</h2>
       {loading ? (
-        <p>Loading listings...</p>
+        <Loader />
       ) : (
         <div className="listing-grid" >
           {dehradun.map(listing => (
@@ -76,7 +77,7 @@ const Home = () => {
 
       <h2>Stay in Goa</h2>
       {loading ? (
-        <p>Loading listings...</p>
+        <Loader />
       ) : (
         <div className="listing-grid" >
           {goa.map(listing => (
@@ -87,7 +88,7 @@ const Home = () => {
 
       <h2>Places to stay in Manali</h2>
       {loading ? (
-        <p>Loading listings...</p>
+        <Loader />
       ) : (
         <div className="listing-grid" >
           {manali.map(listing => (
@@ -98,7 +99,7 @@ const Home = () => {
 
       <h2>Homes in Rishikesh</h2>
       {loading ? (
-        <p>Loading listings...</p>
+        <Loader />
       ) : (
         <div className="listing-grid" >
           {rishikesh.map(listing => (
@@ -109,7 +110,7 @@ const Home = () => {
 
       <h2>Checkout Homes in Mussoorie</h2>
       {loading ? (
-        <p>Loading listings...</p>
+        <Loader />
       ) : (
         <div className="listing-grid" >
           {mussoorie.map(listing => (
