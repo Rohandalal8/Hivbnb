@@ -3,6 +3,7 @@ import { useParams, useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import { AuthContext } from '../context/authContext';
 import Loader from '../components/Loader';
+import ListingMap from '../components/ListingMap';
 import api from '../api/axios';
 import '../styles/listing.css';
 
@@ -138,8 +139,9 @@ const ListingDetail = () => {
                     <h2 style={{ fontSize: '1.5rem' }}>{listing.name} in {listing.city}, {listing.country}</h2>
                     <p>{listing.guests} guests · {listing.bedrooms} bedrooms · {listing.beds} beds · {listing.bathrooms} bathrooms</p>
                     <p>{listing.avgRating.toFixed(1)} ★ {listing.numReviews}</p>
-                    <h2 style={{ fontSize: '1.5rem', borderBottom: '1px solid #a1a1aa2c', paddingBottom: '10px' }}>Host by {listing.ownerId?.name}</h2>
+                    <h2 style={{ fontSize: '1.5rem', borderBottom: '1px solid #a1a1aa2c', paddingBottom: '10px' }}>Hosted by {listing.ownerId?.name}</h2>
                     <p style={{ marginTop: '10px', borderBottom: '1px solid #a1a1aa2c', paddingBottom: '10px' }}>{listing.description}</p>
+                    <ListingMap coordinates={listing.geometry?.coordinates} name={listing.name} />
 
                     <div>
                         <h4 style={{ marginBottom: '5px' }}>Customer Reviews : {listing.avgRating.toFixed(1)} ★</h4>
