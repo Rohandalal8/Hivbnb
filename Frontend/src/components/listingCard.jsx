@@ -12,14 +12,12 @@ const ListingCard = ({ listing }) => {
                 <div className="listing-info">
                     <p style={{color: '#000'}}>{listing.name} in {listing.city}</p>
                     {listing.discount > 0 ? (
-                        <div style={{ display: 'flex', alignItems: 'baseline', gap: '3px' }}>
-                            <p style={{ color: '#80808b' }}>
-                                ₹{discountedPrice.toFixed(2) * 2} for 2 nights ★ {listing.numReviews}
+                            <p>
+                                ₹{discountedPrice.toFixed(2) * 2} for 2 nights ★ {listing.avgRating.toFixed(1)}
                             </p>
-                        </div>
                     ) : (
-                        <p style={{color: '#80808b'}}>
-                            ₹{listing.price.toFixed(2) * 2} for 2 nights ★ {listing.numReviews}
+                        <p>
+                            ₹{listing.price.toFixed(2) * 2} for 2 nights ★ {listing.avgRating.toFixed(1)}
                         </p>
                     )}
                 </div>

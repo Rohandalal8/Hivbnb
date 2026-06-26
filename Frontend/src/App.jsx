@@ -2,16 +2,17 @@ import React from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import Navbar from "./components/navbar";
+import Navbar from "./components/Navbar";
 import Home from "./pages/Home";
 import Register from "./pages/Register";
 import Login from "./pages/Login";
 import VerifyEmail from "./pages/VerifyEmail";
-import Footer from "./components/footer";
+import Footer from "./components/Footer";
 import About from "./pages/About";
 import ReturnPolicy from "./pages/ReturnPolicy";
 import Disclaimer from "./pages/Disclaimer";
 import AddListing from "./pages/AddListing";
+import Shop from "./pages/Shop";
 
 function App() {
   return (
@@ -27,6 +28,7 @@ function App() {
         <Route path="/return" element={<ReturnPolicy />} />
         <Route path="/disclaimer" element={<Disclaimer />} />
         <Route path="/add-listing" element={<AddListing />} />
+        <Route path="/shop" element={<Shop />} />
       </Routes>
       <Footer />
     </Router>

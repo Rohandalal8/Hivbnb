@@ -30,7 +30,7 @@
 }
 
 .search-bar:focus {
-  border-color: #fe424d;
+  border-color: #fe424f6f;
 }
 
 @media (max-width: 768px) {

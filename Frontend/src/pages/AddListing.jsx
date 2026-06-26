@@ -2,7 +2,7 @@ import { useState, useContext, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { AuthContext } from "../context/authContext";
 import { toast } from "react-toastify";
-import Loader from "../components/loader";
+import Loader from "../components/Loader";
 import api from "../api/axios";
 import "../styles/auth.css";
 

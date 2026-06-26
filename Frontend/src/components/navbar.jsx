@@ -2,6 +2,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { useContext } from "react";
 import { AuthContext } from "../context/authContext";
 import { toast } from "react-toastify";
+import Loader from "./Loader";
 import "../styles/navbar.css";
 
 const Navbar = () => {
@@ -33,7 +34,7 @@ const Navbar = () => {
                 <li><Link to="/">Wishlist</Link></li>
                 <li><Link to="/">Profile</Link></li>
                 {loading ? (
-                    <li></li>
+                    <Loader />
                 ) : (user && user.emailVerified) ? (
                     <li><button onClick={handleLogout} className="empty-btn" style={{ color: "#ff0000", borderColor: "#ff0000", padding: "5px 10px" }}>
                         Logout

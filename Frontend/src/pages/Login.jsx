@@ -145,7 +145,7 @@ const Login = () => {
                     required
                 />
 
-                <button type="button" onClick={forgotPassword} disabled={loading} style={{ background: "none", color: "#1542f7", border: "none", cursor: "pointer", marginTop: "-15px", textAlign: "left" }} >
+                <button type="button" onClick={forgotPassword} disabled={loading} style={{ background: "none", color: "#1542f7", border: "none", cursor: "pointer", marginTop: "-10px", textAlign: "left" }} >
                     Forgot Password?
                 </button>
 
@@ -153,7 +153,7 @@ const Login = () => {
                     {loading ? 'Logging in...' : 'Login'}
                 </button>
 
-                <p style={{ fontSize: "0.9rem", marginTop: "-10px" }}>
+                <p style={{ fontSize: "0.9rem", marginTop: "-5px" }}>
                     Don't have an account? <Link to="/register">Register here</Link>
                 </p>
 

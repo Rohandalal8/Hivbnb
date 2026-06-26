@@ -1,7 +1,7 @@
 import { useEffect, useState, useContext } from "react";
-import { Link } from "react-router-dom";
-import ListingCard from "../components/listingCard";
-import Loader from "../components/loader";
+import { Link, useNavigate } from "react-router-dom";
+import ListingCard from "../components/ListingCard";
+import Loader from "../components/Loader";
 import { AuthContext } from "../context/authContext";
 import api from "../api/axios";
 import "../styles/home.css";
@@ -16,6 +16,7 @@ const Home = () => {
   const [sortBy, setSortBy] = useState("selling");
   const [loading, setLoading] = useState(true);
   const { user } = useContext(AuthContext);
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchListings = async () => {
@@ -45,21 +46,32 @@ const Home = () => {
       <div className="search-container">
         <select
           value={sortBy}
-          onChange={(e) => setSortBy(e.target.value)}
+          onChange={(e) => {
+            const value = e.target.value;
+            setSortBy(value);
+
+            navigate(`/shop?filter${value}`);
+          }}
           className="search-bar"
           style={{ maxWidth: '100px' }}
         >
-          <option value="selling">Filter</option>
-          <option value="discount">High to Low</option>
-          <option value="recent">Low to High</option>
-          <option value="price">Most Discounted</option>
-          <option value="name">Most Rated</option>
+          <option value="all">Filter</option>
+          <option value="highest">High to Low</option>
+          <option value="lowest">Low to High</option>
+          <option value="rating">Most Rated</option>
         </select>
         <input
           type="text"
           placeholder="Search City..."
           value={search}
-          onChange={(e) => setSearch(e.target.value)}
+          onChange={(e) => {
+            const value = e.target.value;
+            setSearch(value);
+
+            if (value.trim() !== "") {
+              navigate(`/shop?search=${encodeURIComponent(value)}`);
+            }
+          }}
           className="search-bar"
         />
       </div>
