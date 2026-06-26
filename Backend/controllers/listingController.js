@@ -188,7 +188,8 @@ const addListingReview = async (req, res) => {
     try {
         const { rating, comment } = req.body;
         const listingId = req.params.id;
-        const userId = req.user._id;
+        const user = await User.findOne({ email: req.firebaseUser.email });
+        const userId = user._id;
         const review = new Review({ listingId, userId, rating, comment });
         const savedReview = await review.save();
 

@@ -13,6 +13,7 @@ import ReturnPolicy from "./pages/ReturnPolicy";
 import Disclaimer from "./pages/Disclaimer";
 import AddListing from "./pages/AddListing";
 import Shop from "./pages/Shop";
+import ListingDetail from "./pages/listingDetail";
 
 function App() {
   return (
@@ -29,6 +30,7 @@ function App() {
         <Route path="/disclaimer" element={<Disclaimer />} />
         <Route path="/add-listing" element={<AddListing />} />
         <Route path="/shop" element={<Shop />} />
+        <Route path="/listing/:id" element={<ListingDetail />} />
       </Routes>
       <Footer />
     </Router>

@@ -6,7 +6,7 @@ const ShopListingCard = ({ listing }) => {
     const discountedPrice = listing.price - (listing.price * listing.discount / 100);
 
     return (
-        <Link to={`/product/${listing._id}`}>
+        <Link to={`/listing/${listing._id}`}>
             <div className="shop-listing-card">
                 <img src={listing.imageUrls?.[0]} alt={listing.name} className="shop-listing-image" />
                 <div className="listing-info">
