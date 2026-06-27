@@ -122,7 +122,7 @@ const deleteListing = async (req, res) => {
     try {
         const listing = await Listing.findById(req.params.id);
         if (listing) {
-            await listing.remove();
+            await listing.deleteOne();
             res.json({ message: 'Listing removed' });
         } else {
             res.status(404).json({ message: 'Listing not found' });
@@ -132,35 +132,40 @@ const deleteListing = async (req, res) => {
     }
 };
 
+// get my listings for the logged-in user
+const getMyListings = async (req, res) => {
+    try {
+        const user = await User.findOne({ firebaseUid: req.firebaseUser.uid });
+        if (!user) {
+            return res.status(404).json({ message: "User not found" });
+        }
+        const listings = await Listing.find({ ownerId: user._id });
+        res.status(200).json(listings);
+    } catch (error) {
+        console.error("Error fetching user's listings:", error);
+        res.status(500).json({ message: error.message });
+    }
+};
+
 //Add or remove a listing from the user's wishlist
 const toggleWishlist = async (req, res) => {
     try {
 
         const { listingId } = req.params;
-
         const user = await User.findOne({ firebaseUid: req.firebaseUser.uid });
-
         if (!user) {
             return res.status(404).json({ message: "User not found" });
         }
 
         const exists = user.wishlist.some(id => id.toString() === listingId);
-
         if (exists) {
-
             user.wishlist = user.wishlist.filter(id => id.toString() !== listingId);
-
             await user.save();
-
             return res.status(200).json({ message: "Removed from wishlist", wishlist: user.wishlist });
         }
-
         user.wishlist.push(listingId);
-
         await user.save();
-
         res.status(200).json({ message: "Added to wishlist", wishlist: user.wishlist });
-
     } catch (error) {
         res.status(500).json({ message: error.message });
     }
@@ -212,6 +217,7 @@ module.exports = {
     createListing,
     updateListing,
     deleteListing,
+    getMyListings,
     toggleWishlist,
     getWishlist,
     addListingReview

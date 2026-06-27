@@ -11,15 +11,16 @@ import Footer from "./components/Footer";
 import About from "./pages/About";
 import ReturnPolicy from "./pages/ReturnPolicy";
 import Disclaimer from "./pages/Disclaimer";
-import AddListing from "./pages/AddListing";
+import AddListing from "./host/AddListing";
 import Shop from "./pages/Shop";
 import ListingDetail from "./pages/listingDetail";
+import HostDashboard from "./host/HostDashboard";
 
 function App() {
   return (
     <Router>
       <Navbar />
-      <ToastContainer position="top-right" autoClose={3000} />
+      <ToastContainer position="top-right" autoClose={3000} style={{ zIndex: 99999 }} />
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/register" element={<Register />} />
@@ -31,6 +32,7 @@ function App() {
         <Route path="/add-listing" element={<AddListing />} />
         <Route path="/shop" element={<Shop />} />
         <Route path="/listing/:id" element={<ListingDetail />} />
+        <Route path="/host-dashboard" element={<HostDashboard />} />
       </Routes>
       <Footer />
     </Router>

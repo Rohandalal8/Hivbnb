@@ -26,7 +26,7 @@ const AddListing = () => {
     const [loading, setLoading] = useState(false);
 
     useEffect(() => {
-        if (authLoading) return; // Wait until auth state is determined{
+        if (authLoading) return; // Wait until auth state is determined
 
         if (!user) {
             navigate("/login");
@@ -68,7 +68,7 @@ const AddListing = () => {
         try {
             const response = await api.post("/listings", data);
             toast.success("Listing added successfully");
-            navigate("/my-listings");
+            navigate("/host-dashboard");
         } catch (error) {
             toast.error("Error adding listing");
         } finally {
