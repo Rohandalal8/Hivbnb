@@ -2,7 +2,7 @@ import { useState, useEffect, useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { AuthContext } from '../context/authContext';
 import { toast } from 'react-toastify';
-import ShopListingCard from '../components/ShopListingCard';
+import BnbListingCard from '../components/BnbListingCard';
 import Loader from '../components/Loader';
 import api from '../api/axios';
 import '../styles/home.css';
@@ -61,16 +61,16 @@ const Wishlists = () => {
 
     return (
         <div className="container" style={{ maxWidth: '1600px', margin: '0 auto', padding: '15px' }}>
-            <h2 style={{ textAlign: 'center' }}>My Wishlist</h2>
+            <h2>My Wishlist</h2>
 
             {loading ? (
                 <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '50vh' }}>
                     <Loader />
                 </div>
             ) : (
-                <div className="listing-grid" style={{ flexWrap: 'wrap', justifyContent: 'center' }}>
+                <div className="listing-grid" style={{ flexWrap: 'wrap', justifyContent: 'space-between' }}>
                     {listings.map((listing) => (
-                        <ShopListingCard key={listing._id} listing={listing} wishlistIds={wishlistIds} setWishlistIds={setWishlistIds} setListings={setListings} />
+                        <BnbListingCard key={listing._id} listing={listing} wishlistIds={wishlistIds} setWishlistIds={setWishlistIds} setListings={setListings} />
                     ))}
                 </div>
             )}

@@ -12,17 +12,18 @@ import About from "./pages/About";
 import ReturnPolicy from "./pages/ReturnPolicy";
 import Disclaimer from "./pages/Disclaimer";
 import AddListing from "./host/AddListing";
-import Shop from "./pages/Shop";
+import Bnb from "./pages/Bnb";
 import ListingDetail from "./pages/listingDetail";
 import HostDashboard from "./host/HostDashboard";
 import EditListing from "./host/EditListing";
 import Wishlists from "./pages/Wishlists";
+import Profile from "./pages/Profile";
 
 function App() {
   return (
     <Router>
       <Navbar />
-      <ToastContainer position="top-right" autoClose={3000} style={{ zIndex: 99999 }} />
+      <ToastContainer position="top-right" autoClose={2000} style={{ zIndex: 99999 }} />
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/register" element={<Register />} />
@@ -32,11 +33,12 @@ function App() {
         <Route path="/return" element={<ReturnPolicy />} />
         <Route path="/disclaimer" element={<Disclaimer />} />
         <Route path="/add-listing" element={<AddListing />} />
-        <Route path="/shop" element={<Shop />} />
+        <Route path="/bnb" element={<Bnb />} />
         <Route path="/listing/:id" element={<ListingDetail />} />
         <Route path="/host-dashboard" element={<HostDashboard />} />
         <Route path="/edit-listing/:id" element={<EditListing />} />
         <Route path="/wishlists" element={<Wishlists />} />
+        <Route path="/profile" element={<Profile />} />
       </Routes>
       <Footer />
     </Router>

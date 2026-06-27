@@ -4,7 +4,7 @@ import { toast } from "react-toastify";
 import api from "../api/axios";
 import "../styles/listing.css";
 
-const ShopListingCard = ({ listing, wishlistIds, setWishlistIds, setListings }) => {
+const BnbListingCard = ({ listing, wishlistIds, setWishlistIds, setListings }) => {
     const isWishlisted = wishlistIds?.includes(listing._id);
 
     const handlewishlist = async (e) => {
@@ -38,11 +38,11 @@ const ShopListingCard = ({ listing, wishlistIds, setWishlistIds, setListings }) 
 
     return (
         <Link to={`/listing/${listing._id}`}>
-            <div className="shop-listing-card">
+            <div className="bnb-listing-card">
                 <div className="wishlist-icon" onClick={handlewishlist}>
                     {isWishlisted ? <FaHeart color="red" /> : <FaRegHeart color="white" />}
                 </div>
-                <img src={listing.imageUrls?.[0]} alt={listing.name} className="shop-listing-image" />
+                <img src={listing.imageUrls?.[0]} alt={listing.name} className="bnb-listing-image" />
                 <div className="listing-info">
                     <p style={{ color: '#000' }}>{listing.name} in {listing.city} <span style={{ position: 'absolute', right: '7px' }}>★ {listing.avgRating.toFixed(1)}({listing.numReviews})</span></p>
                     <p style={{ whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>{listing.description}</p>
@@ -62,4 +62,4 @@ const ShopListingCard = ({ listing, wishlistIds, setWishlistIds, setListings }) 
     );
 };
 
-export default ShopListingCard;
+export default BnbListingCard;

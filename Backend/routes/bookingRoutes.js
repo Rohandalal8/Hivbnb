@@ -4,6 +4,6 @@ const { createBooking, myBookings } = require('../controllers/bookingController'
 const router = express.Router();
 
 router.route('/').post(protect, createBooking);
-router.route('/my-bookings').get(protect, myBookings);
+router.route('/myBookings').get(protect, myBookings);
 
 module.exports = router;

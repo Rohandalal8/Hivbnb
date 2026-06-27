@@ -6,10 +6,9 @@ import Loader from "./Loader";
 import "../styles/navbar.css";
 
 const Navbar = () => {
-    const { user, loading, logout } = useContext(AuthContext);
+    const { user, authLoading, logout } = useContext(AuthContext);
     const navigate = useNavigate();
 
-    
     const handleLogout = async () => {
         try {
             await logout();
@@ -32,9 +31,9 @@ const Navbar = () => {
             <ul className="navbar-links">
                 <li><Link to="/host-dashboard">Host Dashboard</Link></li>
                 <li><Link to="/wishlists">Wishlist</Link></li>
-                <li><Link to="/">Profile</Link></li>
-                {loading ? (
-                    <Loader />
+                <li><Link to="/profile">Profile</Link></li>
+                {authLoading ? (
+                    <p></p>
                 ) : (user && user.emailVerified) ? (
                     <li><button onClick={handleLogout} className="empty-btn" style={{ color: "#ff0000", borderColor: "#ff0000", padding: "5px 10px" }}>
                         Logout

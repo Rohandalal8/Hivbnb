@@ -1,5 +1,6 @@
 const Booking = require('../models/bookingModel');
 const Listing = require('../models/listingModel');
+const User = require('../models/userModel');
 
 // Create a new booking
 const createBooking = async (req, res) => {
@@ -37,7 +38,13 @@ const createBooking = async (req, res) => {
 // Get bookings for a user
 const myBookings = async (req, res) => {
     try {
-        const bookings = await Booking.find({ userId: req.user._id }).populate('listingId');
+        const user = await User.findOne({ firebaseUid: req.firebaseUser.uid });
+
+        if (!user) {
+            return res.status(404).json({ message: 'User not found' });
+        }
+
+        const bookings = await Booking.find({ userId: user._id }).populate('listingId');
         res.json(bookings);
     } catch (error) {
         res.status(500).json({ message: 'Error fetching bookings', error });

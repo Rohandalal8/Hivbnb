@@ -63,7 +63,7 @@ const Home = () => {
             const value = e.target.value;
             setSortBy(value);
 
-            navigate(`/shop?filter=${value}`);
+            navigate(`/bnb?filter=${value}`);
           }}
           className="search-bar"
           style={{ maxWidth: '130px' }}
@@ -82,7 +82,7 @@ const Home = () => {
             setSearch(value);
 
             if (value.trim() !== "") {
-              navigate(`/shop?search=${encodeURIComponent(value)}`);
+              navigate(`/bnb?search=${encodeURIComponent(value)}`);
             }
           }}
           className="search-bar"

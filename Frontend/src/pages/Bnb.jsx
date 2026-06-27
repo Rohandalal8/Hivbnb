@@ -1,12 +1,12 @@
 import { useState, useEffect, useContext } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import { AuthContext } from '../context/authContext';
-import ShopListingCard from '../components/ShopListingCard';
+import BnbListingCard from '../components/BnbListingCard';
 import Loader from '../components/Loader';
 import api from '../api/axios';
 import '../styles/home.css';
 
-const Shop = () => {
+const Bnb = () => {
   const [searchParams] = useSearchParams();
   const [listings, setListings] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -93,9 +93,9 @@ const Shop = () => {
           <Loader />
         </div>
       ) : (
-        <div className="listing-grid" style={{ flexWrap: 'wrap', justifyContent: 'center' }}>
+        <div className="listing-grid" style={{ flexWrap: 'wrap', justifyContent: 'space-between' }}>
           {filteredListings.map((listing) => (
-            <ShopListingCard key={listing._id} listing={listing} wishlistIds={wishlistIds} setWishlistIds={setWishlistIds}/>
+            <BnbListingCard key={listing._id} listing={listing} wishlistIds={wishlistIds} setWishlistIds={setWishlistIds}/>
           ))}
         </div>
       )}
@@ -104,4 +104,4 @@ const Shop = () => {
   );
 };
 
-export default Shop;
+export default Bnb;

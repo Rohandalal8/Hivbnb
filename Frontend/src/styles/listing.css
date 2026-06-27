@@ -46,18 +46,18 @@
   color: #80808b;
 }
 
-/* shop listing card */
-.shop-listing-card {
+/* bnb listing card */
+.bnb-listing-card {
   border-radius: 4px;
   overflow: hidden;
-  width: 330px;
+  width: 350px;
   transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
   display: flex;
   flex-direction: column;
   position: relative;
 }
 
-.shop-listing-image {
+.bnb-listing-image {
   width: 100%;
   height: 250px;
   object-fit: cover;

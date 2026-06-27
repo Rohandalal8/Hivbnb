@@ -57,16 +57,16 @@ const HostDashboard = () => {
 
     return (
         <div className="container" style={{ maxWidth: '1400px', margin: '0 auto', padding: '15px' }}>
-            <button className="btn" style={{ marginBottom: '20px', marginLeft: '10px' }} onClick={() => navigate('/add-listing')}>
+            <button className="btn" style={{ marginBottom: '20px' }} onClick={() => navigate('/add-listing')}>
                 + Add Listing
             </button>
-            <h2 style={{marginLeft: '10px'}}>Your Listings</h2>
+            <h2>Your Listings</h2>
             {loading ? (
                 <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '50vh' }}>
                     <Loader />
                 </div>
             ) : (
-                <div className="listing-grid" style={{ flexWrap: 'wrap', justifyContent: 'center' }}>
+                <div className="listing-grid" style={{ flexWrap: 'wrap', justifyContent: 'space-between' }}>
                     {listings.map((listing) => (
                         <HostListingCard key={listing._id} listing={listing} onDelete={handleDeleteListing} />
                     ))}
