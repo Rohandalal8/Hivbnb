@@ -1,12 +1,12 @@
 import { useState, useContext, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { AuthContext } from "../context/authContext";
 import { toast } from "react-toastify";
 import Loader from "../components/Loader";
 import api from "../api/axios";
 import "../styles/auth.css";
 
-const AddListing = () => {
+const EditListing = () => {
     const { user, authLoading } = useContext(AuthContext);
     const navigate = useNavigate();
     const [formData, setFormData] = useState({
@@ -24,6 +24,7 @@ const AddListing = () => {
     });
     const [images, setImages] = useState([]);
     const [loading, setLoading] = useState(false);
+    const { id } = useParams();
 
     useEffect(() => {
         if (authLoading) return; // Wait until auth state is determined
@@ -32,7 +33,30 @@ const AddListing = () => {
             navigate("/login");
             toast.info("Please log in to add a listing.");
         }
-    }, [user, authLoading, navigate]);
+
+        const fetchListing = async () => {
+            try {
+                const response = await api.get(`/listings/${id}`);
+                const listing = response.data;
+                setFormData({
+                    name: listing.name,
+                    description: listing.description,
+                    guests: listing.guests,
+                    bedrooms: listing.bedrooms,
+                    beds: listing.beds,
+                    bathrooms: listing.bathrooms,
+                    price: listing.price,
+                    discount: listing.discount,
+                    street: listing.street,
+                    city: listing.city,
+                    country: listing.country
+                });
+            } catch (error) {
+                toast.error("Error fetching listing");
+            }
+        };
+        fetchListing();
+    }, [user, authLoading, navigate, id]);
 
     if (authLoading) {
         return (
@@ -44,10 +68,7 @@ const AddListing = () => {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        if (!images || images.length === 0) {
-            toast.info("Please upload at least one image.");
-            return;
-        }
+
         setLoading(true);
         const data = new FormData();
         data.append("name", formData.name);
@@ -61,16 +82,18 @@ const AddListing = () => {
         data.append("street", formData.street);
         data.append("city", formData.city);
         data.append("country", formData.country);
-        images.forEach((image, index) => {
-            data.append(`images`, image);
-        });
+        if (images){
+            images.forEach((image, index) => {
+                data.append(`images`, image);
+            });
+        }
 
         try {
-            const response = await api.post("/listings", data);
-            toast.success("Listing added successfully");
+            const response = await api.put(`/listings/${id}`, data);
+            toast.success("Listing updated successfully");
             navigate("/host-dashboard");
         } catch (error) {
-            toast.error("Error adding listing");
+            toast.error("Error updating listing");
         } finally {
             setLoading(false);
         }
@@ -79,21 +102,24 @@ const AddListing = () => {
     return (
         <div className="auth-container">
             <form onSubmit={handleSubmit} className="auth-form">
-                <h2>Add Listing</h2>
+                <h2>Edit Listing</h2>
                 <input
                     type="text"
                     placeholder="Listing Name"
+                    value={formData.name || ""}
                     onChange={(e) => setFormData({ ...formData, name: e.target.value })}
                     required
                 />
                 <textarea
                     placeholder="Description"
+                    value={formData.description}
                     onChange={(e) => setFormData({ ...formData, description: e.target.value })}
                     required
                 />
                 <input
                     type="number"
                     placeholder="Guests"
+                    value={formData.guests}
                     onChange={(e) => setFormData({ ...formData, guests: e.target.value })}
                     onWheel={(e) => e.target.blur()}
                     required
@@ -101,6 +127,7 @@ const AddListing = () => {
                 <input
                     type="number"
                     placeholder="Bedrooms"
+                    value={formData.bedrooms}
                     onChange={(e) => setFormData({ ...formData, bedrooms: e.target.value })}
                     onWheel={(e) => e.target.blur()}
                     required
@@ -108,6 +135,7 @@ const AddListing = () => {
                 <input
                     type="number"
                     placeholder="Beds"
+                    value={formData.beds}
                     onChange={(e) => setFormData({ ...formData, beds: e.target.value })}
                     onWheel={(e) => e.target.blur()}
                     required
@@ -115,6 +143,7 @@ const AddListing = () => {
                 <input
                     type="number"
                     placeholder="Bathrooms"
+                    value={formData.bathrooms}
                     onChange={(e) => setFormData({ ...formData, bathrooms: e.target.value })}
                     onWheel={(e) => e.target.blur()}
                     required
@@ -122,6 +151,7 @@ const AddListing = () => {
                 <input
                     type="number"
                     placeholder="Price"
+                    value={formData.price}
                     onChange={(e) => setFormData({ ...formData, price: e.target.value })}
                     onWheel={(e) => e.target.blur()}
                     required
@@ -129,6 +159,7 @@ const AddListing = () => {
                 <input
                     type="number"
                     placeholder="Discount"
+                    value={formData.discount}
                     onChange={(e) => setFormData({ ...formData, discount: e.target.value })}
                     onWheel={(e) => e.target.blur()}
                     required
@@ -136,18 +167,21 @@ const AddListing = () => {
                 <input
                     type="text"
                     placeholder="Street"
+                    value={formData.street}
                     onChange={(e) => setFormData({ ...formData, street: e.target.value })}
                     required
                 />
                 <input
                     type="text"
                     placeholder="City"
+                    value={formData.city}
                     onChange={(e) => setFormData({ ...formData, city: e.target.value })}
                     required
                 />
                 <input
                     type="text"
                     placeholder="Country"
+                    value={formData.country}
                     onChange={(e) => setFormData({ ...formData, country: e.target.value })}
                     required
                 />
@@ -156,12 +190,11 @@ const AddListing = () => {
                     accept="image/*"
                     multiple
                     onChange={(e) => setImages(Array.from(e.target.files))}
-                    required
                 />
                 <span style={{ fontSize: '0.8rem', color: '#00000092' }}>You can upload multiple images for the product. (Max 20)</span>
 
                 <button className="btn" type="submit" disabled={loading}>
-                    {loading ? 'Adding Listing...' : 'Add Listing'}
+                    {loading ? 'Updating Listing...' : 'Update Listing'}
                 </button>
 
             </form>
@@ -169,4 +202,4 @@ const AddListing = () => {
     );
 };
 
-export default AddListing;
+export default EditListing;
