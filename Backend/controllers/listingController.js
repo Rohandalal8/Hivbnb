@@ -151,12 +151,12 @@ const getMyListings = async (req, res) => {
 const toggleWishlist = async (req, res) => {
     try {
 
-        const { listingId } = req.params;
+        const { listingId } = req.body;
         const user = await User.findOne({ firebaseUid: req.firebaseUser.uid });
         if (!user) {
             return res.status(404).json({ message: "User not found" });
         }
-
+        user.wishlist = user.wishlist.filter(id => id);
         const exists = user.wishlist.some(id => id.toString() === listingId);
         if (exists) {
             user.wishlist = user.wishlist.filter(id => id.toString() !== listingId);
@@ -167,6 +167,7 @@ const toggleWishlist = async (req, res) => {
         await user.save();
         res.status(200).json({ message: "Added to wishlist", wishlist: user.wishlist });
     } catch (error) {
+        console.error("Error toggling wishlist:", error);
         res.status(500).json({ message: error.message });
     }
 };
@@ -175,13 +176,15 @@ const toggleWishlist = async (req, res) => {
 const getWishlist = async (req, res) => {
     try {
 
-        const user = await User.findOne({ firebaseUid: req.firebaseUser.uid }).populate("wishlist");
+        const user = await User.findOne({ firebaseUid: req.firebaseUser.uid }).populate('wishlist');
 
         if (!user) {
             return res.status(404).json({ message: "User not found" });
         }
 
-        res.status(200).json(user.wishlist);
+        const wishlist = user.wishlist.filter(item => item)
+
+        res.status(200).json(wishlist);
 
     } catch (error) {
         res.status(500).json({ message: error.message });

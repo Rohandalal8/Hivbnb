@@ -31,7 +31,7 @@ const Navbar = () => {
 
             <ul className="navbar-links">
                 <li><Link to="/host-dashboard">Host Dashboard</Link></li>
-                <li><Link to="/">Wishlist</Link></li>
+                <li><Link to="/wishlists">Wishlist</Link></li>
                 <li><Link to="/">Profile</Link></li>
                 {loading ? (
                     <Loader />

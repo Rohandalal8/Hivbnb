@@ -1,56 +1,72 @@
-import {useState, useEffect} from 'react';
+import { useState, useEffect, useContext } from 'react';
 import { useSearchParams } from 'react-router-dom';
+import { AuthContext } from '../context/authContext';
 import ShopListingCard from '../components/ShopListingCard';
 import Loader from '../components/Loader';
 import api from '../api/axios';
 import '../styles/home.css';
 
 const Shop = () => {
-    const [searchParams] = useSearchParams();
-    const [listings, setListings] = useState([]);
-    const [loading, setLoading] = useState(true);
-    const [search, setSearch] = useState(searchParams.get('search') || '');
-    const [filter, setFilter] = useState(searchParams.get('filter') || 'all');
+  const [searchParams] = useSearchParams();
+  const [listings, setListings] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [search, setSearch] = useState(searchParams.get('search') || '');
+  const [filter, setFilter] = useState(searchParams.get('filter') || 'all');
+  const [wishlistIds, setWishlistIds] = useState([]);
+  const { user } = useContext(AuthContext);
 
-    useEffect(() => {
-        const fetchListings = async () => {
-            try {
-                const response = await api.get('/listings');
-                setListings(response.data);
-            } catch (error) {
-                console.error('Error fetching listings:', error);
-            } finally {
-                setLoading(false);
-            }
-        };
-        fetchListings();
-    }, []);
+  useEffect(() => {
+    const fetchListings = async () => {
+      try {
+        const response = await api.get('/listings');
+        setListings(response.data);
+      } catch (error) {
+        console.error('Error fetching listings:', error);
+      } finally {
+        setLoading(false);
+      }
+    };
 
-    const discountedPrice = (price, discount) => {
-        return price - (price * discount) / 100;
-    }
-
-    const matchesSearch = listings.filter((listing) => {
-        return listing.city.toLowerCase().includes(search.toLowerCase());
-    });
-
-    const filteredListings = [...matchesSearch].sort((a, b) => {
-        switch (filter) {
-            case 'all':
-                return 0;
-            case 'highest':
-                return discountedPrice(b.price, b.discount) - discountedPrice(a.price, a.discount);
-            case 'lowest':
-                return discountedPrice(a.price, a.discount) - discountedPrice(b.price, b.discount);
-            case 'rating':
-                return b.rating - a.rating;
-            default:
-                return 0;
+    const fetchWishlist = async () => {
+      if (user) {
+        try {
+          const response = await api.get("/listings/wishlist");
+          setWishlistIds(response.data.map(listing => listing._id));
+        } catch (error) {
+          console.error("Error fetching wishlist:", error);
         }
-    });
+      }
+    };
 
-    return (
-        <div className="container" style={{ maxWidth: '1600px', margin: '0 auto', padding: '15px' }}>
+    fetchListings();
+    fetchWishlist();
+  }, [user]);
+
+  const discountedPrice = (price, discount) => {
+    return price - (price * discount) / 100;
+  }
+
+  const matchesSearch = listings.filter((listing) => {
+    return listing.city.toLowerCase().includes(search.toLowerCase());
+  });
+
+  const filteredListings = [...matchesSearch].sort((a, b) => {
+    switch (filter) {
+      case 'all':
+        return 0;
+      case 'highest':
+        return discountedPrice(b.price, b.discount) - discountedPrice(a.price, a.discount);
+      case 'lowest':
+        return discountedPrice(a.price, a.discount) - discountedPrice(b.price, b.discount);
+      case 'rating':
+        return b.rating - a.rating;
+      default:
+        return 0;
+    }
+  });
+
+  return (
+    <div className="container" style={{ maxWidth: '1600px', margin: '0 auto', padding: '15px' }}>
       <div className="search-container">
         <select
           value={filter}
@@ -79,13 +95,13 @@ const Shop = () => {
       ) : (
         <div className="listing-grid" style={{ flexWrap: 'wrap', justifyContent: 'center' }}>
           {filteredListings.map((listing) => (
-            <ShopListingCard key={listing._id} listing={listing} />
+            <ShopListingCard key={listing._id} listing={listing} wishlistIds={wishlistIds} setWishlistIds={setWishlistIds}/>
           ))}
         </div>
       )}
 
     </div>
-    );
+  );
 };
 
 export default Shop;

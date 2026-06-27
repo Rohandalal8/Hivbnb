@@ -172,6 +172,15 @@
   margin-top: 4px;
 }
 
+.wishlist-icon {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  z-index: 10;
+  cursor: pointer;
+  font-size: 1.5rem;
+}
+
 @media (max-width: 768px) {
   .listing-detail {
     flex-direction: column;

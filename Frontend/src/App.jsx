@@ -16,6 +16,7 @@ import Shop from "./pages/Shop";
 import ListingDetail from "./pages/listingDetail";
 import HostDashboard from "./host/HostDashboard";
 import EditListing from "./host/EditListing";
+import Wishlists from "./pages/Wishlists";
 
 function App() {
   return (
@@ -35,6 +36,7 @@ function App() {
         <Route path="/listing/:id" element={<ListingDetail />} />
         <Route path="/host-dashboard" element={<HostDashboard />} />
         <Route path="/edit-listing/:id" element={<EditListing />} />
+        <Route path="/wishlists" element={<Wishlists />} />
       </Routes>
       <Footer />
     </Router>

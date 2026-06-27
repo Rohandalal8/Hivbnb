@@ -2,6 +2,7 @@ import { useEffect, useState, useCallback, useContext } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import { AuthContext } from '../context/authContext';
+import { FaHeart, FaRegHeart } from "react-icons/fa";
 import Loader from '../components/Loader';
 import ListingMap from '../components/ListingMap';
 import api from '../api/axios';
@@ -23,6 +24,7 @@ const ListingDetail = () => {
     const [touchEnd, setTouchEnd] = useState(null);
     const [checkIn, setCheckIn] = useState(new Date());
     const [checkOut, setCheckOut] = useState(new Date(Date.now() + 2 * 24 * 60 * 60 * 1000)); // Default to 2 days later
+    const [wishlistIds, setWishlistIds] = useState([]);
     const navigate = useNavigate();
 
     const fetchListing = useCallback(async () => {
@@ -39,7 +41,18 @@ const ListingDetail = () => {
     }, [id]);
 
     useEffect(() => {
+        const fetchWishlist = async () => {
+            if (user) {
+                try {
+                    const response = await api.get("/listings/wishlist");
+                    setWishlistIds(response.data.map(listing => listing._id));
+                } catch (error) {
+                    console.error("Error fetching wishlist:", error);
+                }
+            }
+        }
         fetchListing();
+        fetchWishlist();
     }, [fetchListing]);
 
     const nextImage = () => {
@@ -100,18 +113,40 @@ const ListingDetail = () => {
         }
     };
 
+    const isWishlisted = listing && wishlistIds.includes(listing._id);
+
+    const handlewishlist = async (e) => {
+        if (!listing) return;
+        try {
+            const response = await api.put(`/listings/wishlist`, { listingId: listing._id });
+
+            if (isWishlisted) {
+                setWishlistIds(wishlistIds.filter(id => id !== listing._id));
+            } else {
+                setWishlistIds([...wishlistIds, listing._id]);
+            }
+            toast.success(isWishlisted ? "Removed from wishlist" : "Added to wishlist");
+        } catch (error) {
+            console.error("Error updating wishlist:", error);
+            toast.error("Failed to update wishlist");
+        }
+    };
+
+    const nights = Math.max(1, Math.ceil((checkOut - checkIn) / (1000 * 60 * 60 * 24))); // Ensure at least 1 night
+    const discountedPrice = listing?.price - ((listing?.price * listing?.discount) / 100);
+
     if (loading) return <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh' }}><Loader /></div>;
 
     if (!listing) return <div style={{ textAlign: 'center', margin: '100px', color: '#ef4444' }}>Listing not found.</div>;
-
-    const nights = Math.max(1, Math.ceil((checkOut - checkIn) / (1000 * 60 * 60 * 24))); // Ensure at least 1 night
-    const discountedPrice = listing.price - ((listing.price * listing.discount) / 100);
 
     return (
         <div style={{ maxWidth: '1000px', width: '100%', margin: '0 auto', padding: '15px' }}>
 
             <div style={{ filter: addReview ? 'blur(4px)' : 'none', pointerEvents: addReview ? 'none' : 'auto' }}>
                 <div className="image-slider" onTouchStart={onTouchStart} onTouchMove={onTouchMove} onTouchEnd={onTouchEnd}>
+                    <div className="wishlist-icon" onClick={handlewishlist}>
+                        {isWishlisted ? <FaHeart color="red" /> : <FaRegHeart color="white" />}
+                    </div>
                     {currentImage > 0 && (
                         <button className="arrow left" onClick={prevImage}>
                             ❮
@@ -148,7 +183,7 @@ const ListingDetail = () => {
                     <p style={{ marginTop: '10px' }}>Where you will be:</p>
                     <ListingMap coordinates={listing.geometry?.coordinates} name={listing.name} />
 
-                    <div style={{  borderTop: '1px solid #a1a1aa2c', paddingTop: '10px'}}>
+                    <div style={{ borderTop: '1px solid #a1a1aa2c', paddingTop: '10px' }}>
                         <h4 style={{ marginBottom: '5px' }}>Customer Reviews : {listing.avgRating.toFixed(1)} ★</h4>
                         <p>Based on {listing.numReviews} customer ratings</p>
                     </div>
@@ -243,7 +278,7 @@ const ListingDetail = () => {
                                     setCheckIn(date);
                                     if (date >= checkOut) {
                                         setCheckOut(new Date(date.getTime() + 2 * 24 * 60 * 60 * 1000)); // Set check-out to 2 days later
-                                    } 
+                                    }
                                 }}
                                 minDate={new Date()}
                                 dateFormat="dd/MM/yyyy"

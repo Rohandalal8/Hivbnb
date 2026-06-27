@@ -15,6 +15,7 @@ const Home = () => {
   const [search, setSearch] = useState("");
   const [sortBy, setSortBy] = useState("selling");
   const [loading, setLoading] = useState(true);
+  const [wishlistIds, setWishlistIds] = useState([]);
   const { user } = useContext(AuthContext);
   const navigate = useNavigate();
 
@@ -38,8 +39,20 @@ const Home = () => {
       }
     };
 
+    const fetchWishlist = async () => {
+      if (user) {
+        try {
+          const response = await api.get("/listings/wishlist");
+          setWishlistIds(response.data.map(listing => listing._id));
+        } catch (error) {
+          console.error("Error fetching wishlist:", error);
+        }
+      }
+    };
+
     fetchListings();
-  }, []);
+    fetchWishlist();
+  }, [user]);
 
   return (
     <div className="container" style={{ maxWidth: '1600px', margin: '0 auto', padding: '15px' }}>
@@ -82,7 +95,7 @@ const Home = () => {
       ) : (
         <div className="listing-grid" >
           {dehradun.map(listing => (
-            <ListingCard key={listing._id} listing={listing} />
+            <ListingCard key={listing._id} listing={listing} wishlistIds={wishlistIds} setWishlistIds={setWishlistIds} />
           ))}
         </div>
       )}
@@ -93,7 +106,7 @@ const Home = () => {
       ) : (
         <div className="listing-grid" >
           {goa.map(listing => (
-            <ListingCard key={listing._id} listing={listing} />
+            <ListingCard key={listing._id} listing={listing} wishlistIds={wishlistIds} setWishlistIds={setWishlistIds} />
           ))}
         </div>
       )}
@@ -104,7 +117,7 @@ const Home = () => {
       ) : (
         <div className="listing-grid" >
           {manali.map(listing => (
-            <ListingCard key={listing._id} listing={listing} />
+            <ListingCard key={listing._id} listing={listing} wishlistIds={wishlistIds} setWishlistIds={setWishlistIds} />
           ))}
         </div>
       )}
@@ -115,7 +128,7 @@ const Home = () => {
       ) : (
         <div className="listing-grid" >
           {rishikesh.map(listing => (
-            <ListingCard key={listing._id} listing={listing} />
+            <ListingCard key={listing._id} listing={listing} wishlistIds={wishlistIds} setWishlistIds={setWishlistIds} />
           ))}
         </div>
       )}
@@ -126,7 +139,7 @@ const Home = () => {
       ) : (
         <div className="listing-grid" >
           {mussoorie.map(listing => (
-            <ListingCard key={listing._id} listing={listing} />
+            <ListingCard key={listing._id} listing={listing} wishlistIds={wishlistIds} setWishlistIds={setWishlistIds} />
           ))}
         </div>
       )}
