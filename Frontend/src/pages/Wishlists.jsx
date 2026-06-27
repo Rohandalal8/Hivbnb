@@ -20,6 +20,7 @@ const Wishlists = () => {
         if (!user) {
             navigate("/login");
             toast.info("Please log in to view your wishlist.");
+            return; // Exit early if user is not logged in
         }
         const fetchListings = async () => {
             try {

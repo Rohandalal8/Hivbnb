@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
 import { FaHeart, FaRegHeart } from "react-icons/fa";
-import { toast } from "react-toastify"; 
+import { toast } from "react-toastify";
 import api from "../api/axios";
 import "../styles/listing.css";
 
@@ -20,7 +20,11 @@ const ListingCard = ({ listing, wishlistIds, setWishlistIds }) => {
             }
             toast.success(isWishlisted ? "Removed from wishlist" : "Added to wishlist");
         } catch (error) {
-            toast.error("Failed to update wishlist");
+            if (error.response?.status === 401) {
+                toast.info("Please login to add to wishlist");
+            } else {
+                toast.error("Failed to update wishlist");
+            }
         }
     };
 
@@ -34,11 +38,11 @@ const ListingCard = ({ listing, wishlistIds, setWishlistIds }) => {
                 </div>
                 <img src={listing.imageUrls?.[0]} alt={listing.name} className="listing-image" />
                 <div className="listing-info">
-                    <p style={{color: '#000'}}>{listing.name} in {listing.city}</p>
+                    <p style={{ color: '#000' }}>{listing.name} in {listing.city}</p>
                     {listing.discount > 0 ? (
-                            <p>
-                                ₹{discountedPrice.toFixed(2) * 2} for 2 nights ★ {listing.avgRating.toFixed(1)}
-                            </p>
+                        <p>
+                            ₹{discountedPrice.toFixed(2) * 2} for 2 nights ★ {listing.avgRating.toFixed(1)}
+                        </p>
                     ) : (
                         <p>
                             ₹{listing.price.toFixed(2) * 2} for 2 nights ★ {listing.avgRating.toFixed(1)}

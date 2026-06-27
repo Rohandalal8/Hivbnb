@@ -127,8 +127,11 @@ const ListingDetail = () => {
             }
             toast.success(isWishlisted ? "Removed from wishlist" : "Added to wishlist");
         } catch (error) {
-            console.error("Error updating wishlist:", error);
-            toast.error("Failed to update wishlist");
+            if (error.response?.status === 401) {
+                toast.info("Please login to add to wishlist");
+            } else {
+                toast.error("Failed to update wishlist");
+            }
         }
     };
 
