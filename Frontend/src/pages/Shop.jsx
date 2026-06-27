@@ -56,7 +56,7 @@ const Shop = () => {
           value={filter}
           onChange={(e) => setFilter(e.target.value)}
           className="search-bar"
-          style={{ maxWidth: '100px' }}
+          style={{ maxWidth: '130px' }}
         >
           <option value="all">Filter</option>
           <option value="highest">High to Low</option>

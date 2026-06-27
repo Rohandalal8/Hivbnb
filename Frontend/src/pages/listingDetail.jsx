@@ -5,6 +5,8 @@ import { AuthContext } from '../context/authContext';
 import Loader from '../components/Loader';
 import ListingMap from '../components/ListingMap';
 import api from '../api/axios';
+import DatePicker from 'react-datepicker';
+import 'react-datepicker/dist/react-datepicker.css';
 import '../styles/listing.css';
 
 const ListingDetail = () => {
@@ -19,8 +21,9 @@ const ListingDetail = () => {
     const [showAllReviews, setShowAllReviews] = useState(false);
     const [touchStart, setTouchStart] = useState(null);
     const [touchEnd, setTouchEnd] = useState(null);
+    const [checkIn, setCheckIn] = useState(new Date());
+    const [checkOut, setCheckOut] = useState(new Date(Date.now() + 2 * 24 * 60 * 60 * 1000)); // Default to 2 days later
     const navigate = useNavigate();
-
 
     const fetchListing = useCallback(async () => {
         try {
@@ -101,6 +104,7 @@ const ListingDetail = () => {
 
     if (!listing) return <div style={{ textAlign: 'center', margin: '100px', color: '#ef4444' }}>Listing not found.</div>;
 
+    const nights = Math.max(1, Math.ceil((checkOut - checkIn) / (1000 * 60 * 60 * 24))); // Ensure at least 1 night
     const discountedPrice = listing.price - ((listing.price * listing.discount) / 100);
 
     return (
@@ -137,13 +141,14 @@ const ListingDetail = () => {
             <div className="listing-detail" style={{ filter: addReview ? 'blur(4px)' : 'none', pointerEvents: addReview ? 'none' : 'auto' }}>
                 <div className="detail-info">
                     <h2 style={{ fontSize: '1.5rem' }}>{listing.name} in {listing.city}, {listing.country}</h2>
-                    <p>{listing.guests} guests · {listing.bedrooms} bedrooms · {listing.beds} beds · {listing.bathrooms} bathrooms</p>
+                    <p>{listing.guests} {listing.guests > 1 ? 'guests' : 'guest'} · {listing.bedrooms} {listing.bedrooms > 1 ? 'bedrooms' : 'bedroom'} · {listing.beds} {listing.beds > 1 ? 'beds' : 'bed'} · {listing.bathrooms} {listing.bathrooms > 1 ? 'bathrooms' : 'bathroom'}</p>
                     <p>{listing.avgRating.toFixed(1)} ★ {listing.numReviews}</p>
                     <h2 style={{ fontSize: '1.5rem', borderBottom: '1px solid #a1a1aa2c', paddingBottom: '10px' }}>Hosted by {listing.ownerId?.name}</h2>
                     <p style={{ marginTop: '10px', borderBottom: '1px solid #a1a1aa2c', paddingBottom: '10px' }}>{listing.description}</p>
+                    <p style={{ marginTop: '10px' }}>Where you will be:</p>
                     <ListingMap coordinates={listing.geometry?.coordinates} name={listing.name} />
 
-                    <div>
+                    <div style={{  borderTop: '1px solid #a1a1aa2c', paddingTop: '10px'}}>
                         <h4 style={{ marginBottom: '5px' }}>Customer Reviews : {listing.avgRating.toFixed(1)} ★</h4>
                         <p>Based on {listing.numReviews} customer ratings</p>
                     </div>
@@ -210,36 +215,53 @@ const ListingDetail = () => {
                         <div style={{ display: 'flex', alignItems: 'baseline', gap: '3px' }}>
 
                             <span className="product-discounted-price" style={{ fontSize: '1.25rem', textDecoration: 'line-through', color: '#80808b' }}>
-                                ${listing.price}
+                                ₹{listing.price * nights}
                             </span>
                             <span className="product-price" style={{ fontSize: '1.25rem' }}>
-                                ${discountedPrice}
+                                ₹{discountedPrice * nights}
                             </span>
                             <span className="product-discount" style={{ fontSize: '1rem', color: '#80808b' }}>
-                                for 2 nights
+                                for {nights} {nights > 1 ? 'nights' : 'night'}
                             </span>
                         </div>
                     ) : (
                         <div style={{ display: 'flex', alignItems: 'baseline', gap: '3px' }}>
                             <span className="product-price" style={{ fontSize: '1.25rem' }}>
-                                ${listing.price}
-
+                                ₹{listing.price * nights}
                             </span>
                             <span className="product-discount" style={{ fontSize: '1rem', color: '#80808b' }}>
-                                for 2 nights
+                                for {nights} {nights > 1 ? 'nights' : 'night'}
                             </span>
                         </div>
                     )}
                     <div style={{ display: 'flex', marginTop: '10px', border: '1px solid #000', borderRadius: '12px', fontSize: '0.8rem' }}>
                         <div style={{ width: '50%', borderRight: '1px solid #000', padding: '10px' }}>
                             <p>CHECK-IN</p>
-                            <p>12/15/2023</p>
+                            <DatePicker
+                                selected={checkIn}
+                                onChange={(date) => {
+                                    setCheckIn(date);
+                                    if (date >= checkOut) {
+                                        setCheckOut(new Date(date.getTime() + 2 * 24 * 60 * 60 * 1000)); // Set check-out to 2 days later
+                                    } 
+                                }}
+                                minDate={new Date()}
+                                dateFormat="dd/MM/yyyy"
+                                className="date-picker-input"
+                            />
                         </div>
                         <div style={{ width: '50%', padding: '10px' }}>
                             <p>CHECKOUT</p>
-                            <p>12/17/2023</p>
+                            <DatePicker
+                                selected={checkOut}
+                                onChange={(date) => setCheckOut(date)}
+                                minDate={new Date(checkIn.getTime() + 24 * 60 * 60 * 1000)} // At least 1 day after check-in
+                                dateFormat="dd/MM/yyyy"
+                                className="date-picker-input"
+                            />
                         </div>
                     </div>
+                    <p style={{ color: '#80808b', fontSize: '0.8rem', padding: '5px' }}>Max {listing.guests} {listing.guests > 1 ? 'guests' : 'guest'} capacity</p>
                     <button className="btn" style={{ width: '100%', marginTop: '10px' }} onClick={() => {
                         if (!user) {
                             toast.error('Please login to reserve this listing');

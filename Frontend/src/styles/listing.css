@@ -161,6 +161,17 @@
   width: calc(50% - 10px);
 }
 
+.date-picker-input {
+  width: 100%;
+  border: none;
+  outline: none;
+  background: transparent;
+  font-size: 0.8rem;
+  cursor: pointer;
+  padding: 0;
+  margin-top: 4px;
+}
+
 @media (max-width: 768px) {
   .listing-detail {
     flex-direction: column;

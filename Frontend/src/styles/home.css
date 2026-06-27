@@ -14,6 +14,7 @@
   gap: 10px;
   position: sticky;
   top: 50px;
+  z-index: 1000;
 }
 
 .search-bar {
@@ -35,6 +36,8 @@
 
 @media (max-width: 768px) {
   .search-container {
-    top:40px;
+    top:50px;
+    height: fit-content;
+    border-bottom: none;
   }
 }

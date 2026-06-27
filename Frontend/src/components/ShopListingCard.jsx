@@ -15,11 +15,11 @@ const ShopListingCard = ({ listing }) => {
                     <p>{listing.bedrooms} bedrooms | {listing.beds} beds | {listing.bathrooms} bathrooms</p>
                     {listing.discount > 0 ? (
                             <p style={{color: '#000'}}>
-                                ₹{discountedPrice.toFixed(2) * 5} <span style={{color: '#80808b'}}>for 5 nights</span>
+                                ₹{discountedPrice.toFixed(2) * 2} <span style={{color: '#80808b'}}>for 2 nights</span>
                             </p>
                     ) : (
                         <p style={{color: '#000'}}>
-                            ₹{listing.price.toFixed(2) * 5} <span style={{color: '#80808b'}}>for 5 nights</span>
+                            ₹{listing.price.toFixed(2) * 2} <span style={{color: '#80808b'}}>for 2 nights</span>
                         </p>
                     )}
                 </div>

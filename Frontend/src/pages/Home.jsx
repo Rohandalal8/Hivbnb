@@ -50,10 +50,10 @@ const Home = () => {
             const value = e.target.value;
             setSortBy(value);
 
-            navigate(`/shop?filter${value}`);
+            navigate(`/shop?filter=${value}`);
           }}
           className="search-bar"
-          style={{ maxWidth: '100px' }}
+          style={{ maxWidth: '130px' }}
         >
           <option value="all">Filter</option>
           <option value="highest">High to Low</option>
