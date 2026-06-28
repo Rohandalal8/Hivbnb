@@ -10,6 +10,7 @@ const Profile = () => {
   const navigate = useNavigate();
   const [bookings, setBookings] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [profile, setProfile] = useState(null);
 
   useEffect(() => {
     if (authLoading) return;
@@ -21,23 +22,29 @@ const Profile = () => {
     const fetchMyBookings = async () => {
       try {
         const res = await api.get('/bookings/myBookings');
-        setBookings(res.data);
-        if (res.ok) {
-          setBookings(Array.isArray(data) ? data : []);
-        } else {
-          // Token obsolete or 401: clear and bounce
-          if (res.status === 401) {
-             await logout();
-             navigate('/login');
-          }
-          setBookings([]);
-        }
+        setBookings(Array.isArray(res.data) ? res.data : []);
       } catch (error) {
         console.error(error);
+        if (error.response?.status === 401) {
+          await logout();
+          navigate('/login');
+        }
+        setBookings([]);
       } finally {
         setLoading(false);
       }
     };
+
+    const fetchProfile = async () => {
+      try {
+        const res = await api.get('/bookings/profile');
+        setProfile(res.data);
+      } catch (error) {
+        console.error(error);
+      }
+    };
+
+    fetchProfile();
     fetchMyBookings();
   }, [user, navigate, logout]);
 
@@ -52,14 +59,6 @@ const Profile = () => {
     return typeof total === 'number' ? total.toFixed(2) : '0.00';
   };
 
-  const getProductName = (product) => {
-    if (typeof product.productId === 'object' && product.productId?.name) {
-      return product.productId.name;
-    }
-
-    return product.name || 'Product';
-  };
-
   if (!user) return null;
 
   return (
@@ -67,8 +66,8 @@ const Profile = () => {
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', borderBottom: '1px solid rgba(0,0,0,0.1)', paddingBottom: '20px', marginBottom: '20px' }}>
         <div>
           <h2 style={{ marginBottom: '10px' }}>My Profile</h2>
-          <p style={{ color: '#80808b', fontSize: '1rem', marginBottom: '5px' }}>Name: {user.name}</p>
-          <p style={{ color: '#80808b', fontSize: '1rem', whiteSpace: 'nowrap' }}>Email: {user.email}</p>
+          <p style={{ fontSize: '1rem', marginBottom: '5px' }}>Name: {profile?.name}</p>
+          <p style={{ fontSize: '1rem', whiteSpace: 'nowrap' }}>Email: {profile?.email}</p>
         </div>
         <button onClick={handleLogout} className="btn" style={{ background: '#ef4444', boxShadow: 'none' }}>Logout</button>
       </div>
@@ -77,41 +76,55 @@ const Profile = () => {
       {loading ? (
         <Loader />
       ) : bookings.length === 0 ? (
-        <div style={{ padding: '30px', borderRadius: '4px', textAlign: 'center', border: '1px solid #27272a' }}>
+        <div style={{ padding: '30px', borderRadius: '12px', textAlign: 'center', border: '1px solid #27272a' }}>
           <p style={{ color: '#80808b', marginBottom: '15px' }}>You haven't made any bookings yet.</p>
           <Link to="/bnb" className="btn">Start Booking</Link>
         </div>
       ) : (
         <div style={{ display: 'grid', gap: '10px' }}>
           {bookings
-          .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt))
-          .map(booking => (
-            <div key={booking._id} style={{ padding: '20px', borderRadius: '4px', border: '1px solid #27272a', display: 'flex',  justifyContent: 'space-between', alignItems: 'center', gap: '20px' }}>
-              <div>
-                <div style={{ color: '#80808b', fontSize: '0.9rem', marginBottom: '8px', display: 'flex', alignItems: 'flex-start', gap: '5px' }}>
-                  <span>Products:</span>
-                  <div style={{ display: 'grid', gap: '2px' }}>
-                    {(booking.products || []).map((product) => (
-                      <span key={product._id || product.productId?._id || product.productId} style={{ color: '#fff' }}>
-                        {getProductName(product)} x {product.quantity}
+            .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt))
+            .map(booking => (
+              <div key={booking._id} style={{ padding: '20px', borderRadius: '12px', border: '1px solid #27272a', display: 'flex', justifyContent: 'space-between', alignItems: 'center', gap: '20px' }}>
+                <div>
+                  <div style={{ fontSize: '0.9rem', marginBottom: '8px', display: 'flex', flexDirection: 'column', gap: '5px' }}>
+                    <p>
+                      Listing:
+                      <span>
+                        {" "}
+                        {booking.listingId?.name}
                       </span>
-                    ))}
+                    </p>
+                    <p>
+                      Check In:
+                      <span>
+                        {" "}
+                        {new Date(booking.checkIn).toLocaleDateString('en-GB')}
+                      </span>
+                    </p>
+
+                    <p>
+                      Check Out:
+                      <span>
+                        {" "}
+                        {new Date(booking.checkOut).toLocaleDateString('en-GB')}
+                      </span>
+                    </p>
                   </div>
+                  <p style={{ fontSize: '0.9rem', marginBottom: '5px' }}>Placed On: <span>{new Date(booking.createdAt).toLocaleDateString('en-GB')}</span></p>
+                  <p style={{ fontSize: '0.9rem' }}>Total: <span>₹{formatBookingTotal(booking)}</span></p>
                 </div>
-                <p style={{ color: '#a1a1aa', fontSize: '0.9rem', marginBottom: '5px' }}>Placed On: <span style={{ color: '#fff' }}>{new Date(booking.createdAt).toLocaleDateString('en-GB')}</span></p>
-                <p style={{ color: '#a1a1aa', fontSize: '0.9rem' }}>Total: <span style={{ color: '#fff' }}>${formatBookingTotal(booking)}</span></p>
+                <div>
+                  <span style={{
+                    background: booking.status === 'delivered' ? 'rgba(16,185,129,0.1)' : booking.status === 'shipped' ? 'rgba(59,130,246,0.1)' : booking.status === 'pending' ? 'rgba(245,158,11,0.1)' : 'rgba(255,0,0,0.1)',
+                    color: booking.status === 'delivered' ? '#10b981' : booking.status === 'shipped' ? '#3b82f6' : booking.status === 'pending' ? '#f59e0b' : '#ff0000',
+                    padding: '8px 16px', borderRadius: '4px'
+                  }}>
+                    {booking.status}
+                  </span>
+                </div>
               </div>
-              <div>
-                <span style={{ 
-                  background: booking.status === 'delivered' ? 'rgba(16,185,129,0.1)' : booking.status === 'shipped' ? 'rgba(59,130,246,0.1)' : booking.status === 'pending' ? 'rgba(245,158,11,0.1)' : 'rgba(255,0,0,0.1)',
-                  color: booking.status === 'delivered' ? '#10b981' : booking.status === 'shipped' ? '#3b82f6' : booking.status === 'pending' ? '#f59e0b' : '#ff0000',
-                  padding: '8px 16px', borderRadius: '4px'
-                }}>
-                  {booking.status}
-                </span>
-              </div>
-            </div>
-          ))}
+            ))}
         </div>
       )}
     </div>
