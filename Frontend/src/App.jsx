@@ -18,6 +18,8 @@ import HostDashboard from "./host/HostDashboard";
 import EditListing from "./host/EditListing";
 import Wishlists from "./pages/Wishlists";
 import Profile from "./pages/Profile";
+import Checkout from "./pages/Checkout";
+import BookingSuccess from "./pages/BookingSuccess";
 
 function App() {
   return (
@@ -39,6 +41,8 @@ function App() {
         <Route path="/edit-listing/:id" element={<EditListing />} />
         <Route path="/wishlists" element={<Wishlists />} />
         <Route path="/profile" element={<Profile />} />
+        <Route path="/checkout" element={<Checkout />} />
+        <Route path="/booking-success" element={<BookingSuccess />} />
       </Routes>
       <Footer />
     </Router>

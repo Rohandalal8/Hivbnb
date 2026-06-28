@@ -56,7 +56,7 @@ const HostDashboard = () => {
     }
 
     return (
-        <div className="container" style={{ maxWidth: '1400px', margin: '0 auto', padding: '15px' }}>
+        <div className="container" style={{ maxWidth: '1300px', margin: '0 auto', padding: '15px' }}>
             <button className="btn" style={{ marginBottom: '20px' }} onClick={() => navigate('/add-listing')}>
                 + Add Listing
             </button>
@@ -66,7 +66,7 @@ const HostDashboard = () => {
                     <Loader />
                 </div>
             ) : (
-                <div className="listing-grid" style={{ flexWrap: 'wrap', justifyContent: 'space-between' }}>
+                <div className="listing-grid" style={{ flexWrap: 'wrap' }}>
                     {listings.map((listing) => (
                         <HostListingCard key={listing._id} listing={listing} onDelete={handleDeleteListing} />
                     ))}

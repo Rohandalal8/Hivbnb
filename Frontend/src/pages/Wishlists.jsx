@@ -60,7 +60,7 @@ const Wishlists = () => {
     }
 
     return (
-        <div className="container" style={{ maxWidth: '1600px', margin: '0 auto', padding: '15px' }}>
+        <div className="container" style={{ maxWidth: '1300px', margin: '0 auto', padding: '15px' }}>
             <h2>My Wishlist</h2>
 
             {loading ? (
@@ -68,7 +68,7 @@ const Wishlists = () => {
                     <Loader />
                 </div>
             ) : (
-                <div className="listing-grid" style={{ flexWrap: 'wrap', justifyContent: 'space-between' }}>
+                <div className="listing-grid" style={{ flexWrap: 'wrap'}}>
                     {listings.map((listing) => (
                         <BnbListingCard key={listing._id} listing={listing} wishlistIds={wishlistIds} setWishlistIds={setWishlistIds} setListings={setListings} />
                     ))}

@@ -100,7 +100,7 @@ h1, h2, h3, h4 {
 
 h2 {
     font-size: 1.25rem;
-    background: linear-gradient(to right, #000, #00000075);
+    background: linear-gradient(to right, #000, #000000c3);
     background-clip: text;
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;

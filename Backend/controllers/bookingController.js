@@ -27,11 +27,17 @@ const createBooking = async (req, res) => {
         if (totalPrice !== totalAmount) {
             return res.status(400).json({ message: 'Total price mismatch!' });
         }
-        const booking = new Booking({ listingId, checkIn, checkOut, totalPrice, guests, paymentId, userId: req.user._id });
+
+        const user = await User.findOne({ firebaseUid: req.firebaseUser.uid });
+        if (!user) {
+            return res.status(404).json({ message: 'User not found' });
+        }
+        const booking = new Booking({ listingId, checkIn, checkOut, totalPrice, paymentId, userId: user._id });
         const savedBooking = await booking.save();
-        res.status(201).json(savedBooking);
+        res.status(201).json({ success: true, savedBooking });
     } catch (error) {
-        res.status(500).json({ message: 'Error creating booking', error });
+        console.error('Error creating booking:', error);
+        res.status(500).json({ success: false, message: 'Error creating booking', error });
     }
 };
 

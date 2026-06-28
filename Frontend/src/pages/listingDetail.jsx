@@ -305,7 +305,17 @@ const ListingDetail = () => {
                             toast.error('Please login to reserve this listing');
                             navigate('/login');
                         } else {
-                            navigate(`/reserve/${listing._id}`);
+                            navigate(`/checkout`, {
+                                state: {
+                                    booking: {
+                                        listingId: listing._id,
+                                        listing: listing,
+                                        checkIn,
+                                        checkOut,
+                                        nights
+                                    }
+                                }
+                            });
                         }
                     }}>
                         Reserve

@@ -41,3 +41,52 @@
     border-bottom: none;
   }
 }
+
+/* Checkout page styles */
+.checkout-listing-info {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 20px;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.5);
+  padding-bottom: 15px;
+}
+
+.info-image {
+  width: 100px;
+  height: 100px;
+  object-fit: cover;
+  border-radius: 12px;
+}
+
+.dates-info {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  padding: 15px 0;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.5);
+}
+
+.dates-info p {
+  margin: 0;
+  font-size: 15px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.price-info {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  padding: 15px 0;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.5);
+}
+
+.price-info p {
+  margin: 0;
+  font-size: 15px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}

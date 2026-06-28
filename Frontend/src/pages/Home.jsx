@@ -93,7 +93,7 @@ const Home = () => {
       {loading ? (
         <Loader />
       ) : (
-        <div className="listing-grid" >
+        <div className="listing-grid" style={{ justifyContent: 'flex-start' }}>
           {dehradun.map(listing => (
             <ListingCard key={listing._id} listing={listing} wishlistIds={wishlistIds} setWishlistIds={setWishlistIds} />
           ))}
@@ -104,7 +104,7 @@ const Home = () => {
       {loading ? (
         <Loader />
       ) : (
-        <div className="listing-grid" >
+        <div className="listing-grid" style={{ justifyContent: 'flex-start' }}>
           {goa.map(listing => (
             <ListingCard key={listing._id} listing={listing} wishlistIds={wishlistIds} setWishlistIds={setWishlistIds} />
           ))}
@@ -115,7 +115,7 @@ const Home = () => {
       {loading ? (
         <Loader />
       ) : (
-        <div className="listing-grid" >
+        <div className="listing-grid" style={{ justifyContent: 'flex-start' }}>
           {manali.map(listing => (
             <ListingCard key={listing._id} listing={listing} wishlistIds={wishlistIds} setWishlistIds={setWishlistIds} />
           ))}
@@ -126,7 +126,7 @@ const Home = () => {
       {loading ? (
         <Loader />
       ) : (
-        <div className="listing-grid" >
+        <div className="listing-grid" style={{ justifyContent: 'flex-start' }}>
           {rishikesh.map(listing => (
             <ListingCard key={listing._id} listing={listing} wishlistIds={wishlistIds} setWishlistIds={setWishlistIds} />
           ))}
@@ -137,7 +137,7 @@ const Home = () => {
       {loading ? (
         <Loader />
       ) : (
-        <div className="listing-grid" >
+        <div className="listing-grid" style={{ justifyContent: 'flex-start' }}>
           {mussoorie.map(listing => (
             <ListingCard key={listing._id} listing={listing} wishlistIds={wishlistIds} setWishlistIds={setWishlistIds} />
           ))}
