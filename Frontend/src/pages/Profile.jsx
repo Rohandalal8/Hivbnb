@@ -116,8 +116,8 @@ const Profile = () => {
                 </div>
                 <div>
                   <span style={{
-                    background: booking.status === 'delivered' ? 'rgba(16,185,129,0.1)' : booking.status === 'shipped' ? 'rgba(59,130,246,0.1)' : booking.status === 'pending' ? 'rgba(245,158,11,0.1)' : 'rgba(255,0,0,0.1)',
-                    color: booking.status === 'delivered' ? '#10b981' : booking.status === 'shipped' ? '#3b82f6' : booking.status === 'pending' ? '#f59e0b' : '#ff0000',
+                    background: booking.status === 'confirmed' ? 'rgba(16,185,129,0.1)' : booking.status === 'pending' ? 'rgba(59,130,246,0.1)' : 'rgba(255,0,0,0.1)',
+                    color: booking.status === 'confirmed' ? '#10b981' : booking.status === 'pending' ? '#3b82f6' : '#ff0000',
                     padding: '8px 16px', borderRadius: '4px'
                   }}>
                     {booking.status}

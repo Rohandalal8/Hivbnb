@@ -74,8 +74,44 @@ const getProfile = async (req, res) => {
     }
 };
 
+// get bookings for host
+const getOwnerBookings = async (req, res) => {
+    try {
+        const owner = await User.findOne({ firebaseUid: req.firebaseUser.uid });
+
+        if (!owner) {
+            return res.status(404).json({ message: 'User not found' });
+        }
+        const bookings = await Booking.find().populate({path: 'listingId', match: { ownerId: owner._id }}).populate('userId', 'name email');
+        res.json(bookings);
+    } catch (error) {
+        console.error('Error fetching owner bookings:', error);
+        res.status(500).json({ message: 'Error fetching bookings', error });
+    }
+};
+
+// update booking status
+const updateBookingStatus = async (req, res) => {
+    try {
+        const { id } = req.params;
+        const { status } = req.body;
+        const booking = await Booking.findById(id);
+        if (!booking) {
+            return res.status(404).json({ message: 'Booking not found' });
+        }
+        booking.status = status;
+        await booking.save();
+        res.json({ message: 'Booking status updated', booking });
+    } catch (error) {
+        console.error('Error updating booking status:', error);
+        res.status(500).json({ message: 'Error updating booking status', error });
+    }
+};
+
 module.exports = {
     createBooking,
     myBookings,
-    getProfile
+    getProfile,
+    getOwnerBookings,
+    updateBookingStatus
 };

@@ -20,6 +20,7 @@ import Wishlists from "./pages/Wishlists";
 import Profile from "./pages/Profile";
 import Checkout from "./pages/Checkout";
 import BookingSuccess from "./pages/BookingSuccess";
+import HostBookings from "./host/HostBookings";
 
 function App() {
   return (
@@ -43,6 +44,7 @@ function App() {
         <Route path="/profile" element={<Profile />} />
         <Route path="/checkout" element={<Checkout />} />
         <Route path="/booking-success" element={<BookingSuccess />} />
+        <Route path="/host-bookings" element={<HostBookings />} />
       </Routes>
       <Footer />
     </Router>

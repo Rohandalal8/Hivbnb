@@ -60,7 +60,10 @@ const HostDashboard = () => {
             <button className="btn" style={{ marginBottom: '20px' }} onClick={() => navigate('/add-listing')}>
                 + Add Listing
             </button>
-            <h2>Your Listings</h2>
+            <div style={{ display: 'flex', alignItems: 'center', marginBottom: '10px', gap: '20px', borderBottom: '1px solid #ccc', paddingBottom: '10px' }}>
+            <Link to="/host-dashboard"><h2>Your Listings</h2></Link>
+            <Link to="/host-bookings"><h2>Your Bookings</h2></Link>
+            </div>
             {loading ? (
                 <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '50vh' }}>
                     <Loader />
