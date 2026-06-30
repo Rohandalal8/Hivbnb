@@ -42,11 +42,11 @@ const Checkout = () => {
                 return;
             }
 
-            const response = await api.post('/payment/order', { 
+            const response = await api.post('/payment/order', {
                 listingId: booking.listing._id,
                 checkIn: booking.checkIn,
                 checkOut: booking.checkOut
-             });
+            });
             const data = response.data;
 
             if (!data || !data.id) {
@@ -77,7 +77,7 @@ const Checkout = () => {
                             checkOut: booking.checkOut,
                             totalPrice: totalAmount,
                             paymentId: response.razorpay_payment_id
-                         });
+                        });
 
                         if (saveBookingResponse.data.success) {
                             navigate("/booking-success");
@@ -89,7 +89,7 @@ const Checkout = () => {
                         toast.error("Payment verification failed.");
                         setIsPaying(false);
                     }
-                }, 
+                },
 
                 modal: {
                     ondismiss: function () {
@@ -118,27 +118,29 @@ const Checkout = () => {
     };
 
     return (
-        <div className="container" style={{ maxWidth: '400px', border: '1px solid rgba(0, 0, 0, 0.5)', borderRadius: '12px', padding: '20px', marginTop: '50px' }}>
-            <div className="checkout-listing-info">
-                <img src={booking?.listing?.imageUrls[0]} alt={booking?.listing?.name} className="info-image" />
-                <h2>{booking?.listing?.name} in {booking?.listing?.city}</h2>
+        <div className="container" style={{ maxWidth: '400px'}}>
+            <div style={{ maxWidth: '400px', border: '1px solid rgba(0, 0, 0, 0.5)', borderRadius: '12px', padding: '20px', marginTop: '50px' }}>
+                <div className="checkout-listing-info">
+                    <img src={booking?.listing?.imageUrls[0]} alt={booking?.listing?.name} className="info-image" />
+                    <h2>{booking?.listing?.name} in {booking?.listing?.city}</h2>
+                </div>
+                <div className="dates-info">
+                    <h2>Booking Dates</h2>
+                    <p>
+                        <span>Check-in: </span><span>{new Date(booking.checkIn).toDateString()}</span>
+                    </p>
+                    <p>
+                        <span>Check-out: </span><span>{new Date(booking.checkOut).toDateString()}</span>
+                    </p>
+                </div>
+                <div className="price-info">
+                    <h2>Price details</h2>
+                    <p><span>{booking?.nights} nights X ₹{discountedPrice.toFixed(2)}</span><span>₹{(discountedPrice * booking?.nights).toFixed(2)}</span></p>
+                    <p><span>Platform Fee </span><span>₹{platformFee.toFixed(2)}</span></p>
+                </div>
+                <h3 style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '15px 0' }}><span>Total: </span><span>₹{totalAmount.toFixed(2)}</span></h3>
+                <button className="btn" style={{ width: '100%' }} onClick={handlePayment}>Pay Now</button>
             </div>
-            <div className="dates-info">
-                <h2>Booking Dates</h2>
-                <p>
-                    <span>Check-in: </span><span>{new Date(booking.checkIn).toDateString()}</span>
-                </p>
-                <p>
-                    <span>Check-out: </span><span>{new Date(booking.checkOut).toDateString()}</span>
-                </p>
-            </div>
-            <div className="price-info">
-                <h2>Price details</h2>
-                <p><span>{booking?.nights} nights X ₹{discountedPrice.toFixed(2)}</span><span>₹{(discountedPrice * booking?.nights).toFixed(2)}</span></p>
-                <p><span>Platform Fee </span><span>₹{platformFee.toFixed(2)}</span></p>
-            </div>
-            <h3 style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '15px 0' }}><span>Total: </span><span>₹{totalAmount.toFixed(2)}</span></h3>
-            <button className="btn" style={{ width: '100%' }} onClick={handlePayment}>Pay Now</button>
         </div>
     );
 }

@@ -22,9 +22,10 @@ const ListingDetail = () => {
     const [showAllReviews, setShowAllReviews] = useState(false);
     const [touchStart, setTouchStart] = useState(null);
     const [touchEnd, setTouchEnd] = useState(null);
-    const [checkIn, setCheckIn] = useState(new Date());
-    const [checkOut, setCheckOut] = useState(new Date(Date.now() + 2 * 24 * 60 * 60 * 1000)); // Default to 2 days later
+    const [checkIn, setCheckIn] = useState(new Date(Date.now() + 24 * 60 * 60 * 1000)); // Default to tomorrow
+    const [checkOut, setCheckOut] = useState(new Date(Date.now() + 3 * 24 * 60 * 60 * 1000)); // Default to 3 days later
     const [wishlistIds, setWishlistIds] = useState([]);
+    const [bookedDates, setBookedDates] = useState([]);
     const navigate = useNavigate();
 
     const fetchListing = useCallback(async () => {
@@ -51,9 +52,103 @@ const ListingDetail = () => {
                 }
             }
         }
+
+        const fetchBookedDates = async () => {
+            try {
+                const response = await api.get(`/bookings/unavailable/${id}`);
+                setBookedDates(response.data);
+            } catch (error) {
+                console.error("Error fetching booked dates:", error);
+            }
+        };
+
         fetchListing();
         fetchWishlist();
-    }, [fetchListing]);
+        fetchBookedDates();
+    }, [fetchListing, user, id]);
+
+    const excludedDates = [];
+
+    bookedDates.forEach((booking) => {
+        let current = new Date(booking.checkIn);
+
+        while (current <= new Date(booking.checkOut)) {
+            excludedDates.push(new Date(current));
+
+            current = new Date(current);
+            current.setDate(current.getDate() + 1);
+        }
+    });
+
+    const checkInDisabledDates = [];
+
+    bookedDates.forEach((booking) => {
+        const blocked = new Date(booking.checkIn);
+
+        blocked.setDate(blocked.getDate() - 1);
+
+        checkInDisabledDates.push(blocked);
+    });
+
+    useEffect(() => {
+        if (!bookedDates.length) return;
+
+        let startDate = new Date();
+        startDate.setHours(0, 0, 0, 0);
+        startDate.setDate(startDate.getDate() + 1);
+
+        while (true) {
+            const endDate = new Date(startDate);
+            endDate.setDate(endDate.getDate() + 2);
+            let conflict = false;
+            let current = new Date(startDate);
+
+            while (current <= endDate) {
+                const booked = excludedDates.some(
+                    date =>
+                        date.toDateString() ===
+                        current.toDateString()
+                );
+
+                if (booked) {
+                    conflict = true;
+                    break;
+                }
+
+                current.setDate(current.getDate() + 1);
+            }
+
+            if (!conflict) {
+                setCheckIn(new Date(startDate));
+                setCheckOut(new Date(endDate));
+                break;
+            }
+
+            startDate.setDate(startDate.getDate() + 1);
+        }
+
+    }, [bookedDates]);
+
+    const getMaxCheckoutDate = () => {
+        if (!checkIn) return null;
+
+        let current = new Date(checkIn);
+        for (let i = 0; i < 365; i++) {
+            current.setDate(current.getDate() + 1);
+
+            const isBlocked = excludedDates.some(
+                d => d.toDateString() === current.toDateString()
+            );
+
+            if (isBlocked) {
+                const maxDate = new Date(current);
+                maxDate.setDate(maxDate.getDate() - 1);
+                return maxDate;
+            }
+        }
+
+        return current;
+    };
 
     const nextImage = () => {
         if (currentImage < listing.imageUrls.length - 1) {
@@ -90,7 +185,6 @@ const ListingDetail = () => {
             prevImage();
         }
     }
-
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -135,8 +229,20 @@ const ListingDetail = () => {
         }
     };
 
+    const tomorrow = new Date();
+    tomorrow.setDate(tomorrow.getDate() + 1);
     const nights = Math.max(1, Math.ceil((checkOut - checkIn) / (1000 * 60 * 60 * 24))); // Ensure at least 1 night
     const discountedPrice = listing?.price - ((listing?.price * listing?.discount) / 100);
+
+    useEffect(() => {
+        if (!checkIn || !checkOut) return;
+
+        const maxDate = getMaxCheckoutDate();
+
+        if (checkOut > maxDate) {
+            setCheckOut(maxDate);
+        }
+    }, [checkIn, excludedDates]);
 
     if (loading) return <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh' }}><Loader /></div>;
 
@@ -251,7 +357,6 @@ const ListingDetail = () => {
                 <div className="detail-price">
                     {listing.discount > 0 ? (
                         <div style={{ display: 'flex', alignItems: 'baseline', gap: '3px' }}>
-
                             <span className="product-discounted-price" style={{ fontSize: '1.25rem', textDecoration: 'line-through', color: '#80808b' }}>
                                 ₹{listing.price * nights}
                             </span>
@@ -283,7 +388,8 @@ const ListingDetail = () => {
                                         setCheckOut(new Date(date.getTime() + 2 * 24 * 60 * 60 * 1000)); // Set check-out to 2 days later
                                     }
                                 }}
-                                minDate={new Date()}
+                                minDate={tomorrow}
+                                excludeDates={[...excludedDates, ...checkInDisabledDates]}
                                 dateFormat="dd/MM/yyyy"
                                 className="date-picker-input"
                             />
@@ -294,6 +400,8 @@ const ListingDetail = () => {
                                 selected={checkOut}
                                 onChange={(date) => setCheckOut(date)}
                                 minDate={new Date(checkIn.getTime() + 24 * 60 * 60 * 1000)} // At least 1 day after check-in
+                                excludeDates={excludedDates}
+                                maxDate={getMaxCheckoutDate()}
                                 dateFormat="dd/MM/yyyy"
                                 className="date-picker-input"
                             />

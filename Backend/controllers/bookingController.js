@@ -5,7 +5,7 @@ const User = require('../models/userModel');
 // Create a new booking
 const createBooking = async (req, res) => {
     try {
-        const { listingId, checkIn, checkOut, totalPrice, guests, paymentId } = req.body;
+        const { listingId, checkIn, checkOut, totalPrice, paymentId } = req.body;
         const listing = await Listing.findById(listingId);
         if (!listing) {
             return res.status(404).json({ message: 'Listing not found' });
@@ -13,6 +13,29 @@ const createBooking = async (req, res) => {
 
         const startDate = new Date(checkIn);
         const endDate = new Date(checkOut);
+        const tommorrow = new Date();
+        tommorrow.setHours(0, 0, 0, 0);
+        tommorrow.setDate(tommorrow.getDate() + 1);
+
+        const existingBooking = await Booking.findOne({
+            listingId,
+            status: { $ne: "cancelled" },
+            checkIn: { $lt: endDate },
+            checkOut: { $gt: startDate }
+        });
+
+        if (existingBooking) {
+            return res.status(400).json({ message: 'Listing is not available for the selected dates!' });
+        }
+
+        if (startDate < tommorrow) {
+            return res.status(400).json({ message: 'Bookings must be made at least 24 hours in advance!' });
+        }
+
+        if (checkIn >= checkOut) {
+            return res.status(400).json({ message: "Check-out must be after check-in" });
+        }
+
         const nights = Math.ceil((endDate - startDate) / (1000 * 60 * 60 * 24));
 
         if (nights <= 0) {
@@ -82,11 +105,25 @@ const getOwnerBookings = async (req, res) => {
         if (!owner) {
             return res.status(404).json({ message: 'User not found' });
         }
-        const bookings = await Booking.find().populate({path: 'listingId', match: { ownerId: owner._id }}).populate('userId', 'name email');
+        const bookings = await Booking.find().populate({ path: 'listingId', match: { ownerId: owner._id } }).populate('userId', 'name email');
         res.json(bookings);
     } catch (error) {
         console.error('Error fetching owner bookings:', error);
         res.status(500).json({ message: 'Error fetching bookings', error });
+    }
+};
+
+const getUnavailableDates = async (req, res) => {
+    try {
+        const bookings = await Booking.find({
+            listingId: req.params.listingId,
+            status: { $ne: "cancelled" }
+        });
+
+        res.json(bookings);
+    } catch (error) {
+        console.error('Error fetching unavailable dates:', error);
+        res.status(500).json({ message: error.message });
     }
 };
 
@@ -114,5 +151,6 @@ module.exports = {
     myBookings,
     getProfile,
     getOwnerBookings,
+    getUnavailableDates,
     updateBookingStatus
 };
