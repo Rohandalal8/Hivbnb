@@ -42,7 +42,7 @@ const bookingSchema = new mongoose.Schema({
     },
     cancelledBy: {
         type: String,
-        enum: ['user', 'host'],
+        enum: ['user', 'host', 'system'],
         default: null
     }
 

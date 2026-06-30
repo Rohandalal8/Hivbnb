@@ -189,7 +189,7 @@ const ListingDetail = () => {
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
-            const response = await api.post(`/listings/${listing._id}/reviews`, {
+            const response = await api.post(`/listings/reviews/${listing._id}`, {
                 rating,
                 comment
             });

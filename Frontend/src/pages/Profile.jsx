@@ -48,23 +48,22 @@ const Profile = () => {
     fetchMyBookings();
   }, [user, navigate, logout]);
 
-  const updateStatus = async (bookingId, newStatus) => {
+  const cancelBooking = async (bookingId) => {
     if (window.confirm(`Are you sure you want to cancel this booking? you will only get 50% refund if you cancel the booking.`)) {
       try {
-        const response = await api.put(`/bookings/${bookingId}/status`, { status: newStatus, cancelledBy: 'user' });
+        const response = await api.put(`/bookings/user-cancel/${bookingId}`, { status: 'cancelled' });
         const updatedBooking = response.data;
         setBookings(prev =>
           prev.map(booking =>
             booking._id === bookingId
               ? {
                 ...booking,
-                status: newStatus,
-                cancelledBy: "user"
+                status: 'cancelled'
               }
               : booking
           )
         );
-        toast.success('Booking status updated successfully!');
+        toast.success('Booking cancelled successfully!');
       } catch (error) {
         console.error('Error updating booking status:', error);
         toast.error('Failed to update booking status.');
@@ -118,13 +117,7 @@ const Profile = () => {
                   <p>Placed On: {new Date(booking.createdAt).toLocaleDateString('en-GB')}</p>
                   <p>Total: ₹{formatBookingTotal(booking)}</p>
                   {booking.status === 'cancelled' && (
-                    <p style={{ color: '#ef4444' }}>
-                      Cancelled By:
-                      <span>
-                        {" "}
-                        {booking.cancelledBy === 'host' ? 'Host' : 'You (User)'}
-                      </span>
-                    </p>
+                    <p style={{ color: '#ef4444' }}>Cancelled By: {booking.cancelledBy === 'user' ? 'You' : booking.cancelledBy === 'host' ? 'Host' : 'Auto Cancelled'}</p>
                   )}
                 </div>
 
@@ -136,8 +129,8 @@ const Profile = () => {
                   }}>
                     {booking.status}
                   </span>
-                  {booking.status !== 'cancelled' && (
-                    <button className="btn" onClick={() => updateStatus(booking._id, 'cancelled')}>Cancel Booking</button>
+                  {booking.status !== 'cancelled' && new Date() < new Date(booking.checkIn) && (
+                    <button className="btn" onClick={() => cancelBooking(booking._id)}>Cancel Booking</button>
                   )}
                 </div>
               </div>

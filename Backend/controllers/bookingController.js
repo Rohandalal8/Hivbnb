@@ -131,18 +131,51 @@ const getUnavailableDates = async (req, res) => {
 const updateBookingStatus = async (req, res) => {
     try {
         const { id } = req.params;
-        const { status, cancelledBy } = req.body;
+        const { status } = req.body;
         const booking = await Booking.findById(id);
         if (!booking) {
             return res.status(404).json({ message: 'Booking not found' });
         }
+
+        if (booking.status === 'cancelled' || booking.status === 'confirmed') {
+            return res.status(400).json({ message: 'Booking status cannot be updated' });
+        }
+
+        const diffHours = (Date.now() - booking.createdAt.getTime()) / (1000 * 60 * 60);
+        if (diffHours > 24) {
+            return res.status(400).json({ message: 'Response window has expired' });
+        }
+
         booking.status = status;
-        booking.cancelledBy = cancelledBy;
+        booking.cancelledBy = 'host';
         await booking.save();
         res.json({ message: 'Booking status updated', booking });
     } catch (error) {
         console.error('Error updating booking status:', error);
         res.status(500).json({ message: 'Error updating booking status', error });
+    }
+};
+
+// user cancel booking
+const cancelBooking = async (req, res) => {
+    try {
+        const { id } = req.params;
+        const booking = await Booking.findById(id);
+        if (!booking) {
+            return res.status(404).json({ message: 'Booking not found' });
+        }
+
+        if (new Date(booking.checkIn) <= new Date()) {
+            return res.status(400).json({ message: 'Booking cannot be cancelled as check-in date has passed' });
+        }
+
+        booking.status = 'cancelled';
+        booking.cancelledBy = 'user';
+        await booking.save();
+        res.json({ message: 'Booking cancelled successfully', booking });
+    } catch (error) {
+        console.error('Error cancelling booking:', error);
+        res.status(500).json({ message: 'Error cancelling booking', error });
     }
 };
 
@@ -152,5 +185,6 @@ module.exports = {
     getProfile,
     getOwnerBookings,
     getUnavailableDates,
-    updateBookingStatus
+    updateBookingStatus,
+    cancelBooking
 };

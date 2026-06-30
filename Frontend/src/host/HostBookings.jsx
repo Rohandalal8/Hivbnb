@@ -18,6 +18,7 @@ const HostBookings = () => {
         if (!user) {
             navigate("/login");
             toast.info("Please log in to view your dashboard.");
+            return;
         }
 
         const fetchOwnerBookings = async () => {
@@ -52,15 +53,14 @@ const HostBookings = () => {
 
     const updateStatus = async (bookingId, newStatus) => {
         try {
-            const response = await api.put(`/bookings/${bookingId}/status`, { status: newStatus, cancelledBy: 'host' });
+            const response = await api.put(`/bookings/status/${bookingId}`, { status: newStatus });
             const updatedBooking = response.data;
             setBookings(prev =>
                 prev.map(booking =>
                     booking._id === bookingId
                         ? {
                             ...booking,
-                            status: newStatus,
-                            cancelledBy: "host"
+                            status: newStatus
                         }
                         : booking
                 )
@@ -105,22 +105,26 @@ const HostBookings = () => {
                                     <p>Placed On: {new Date(booking.createdAt).toLocaleDateString('en-GB')}</p>
                                     <p>Total: ₹{formatBookingTotal(booking)}</p>
                                     {booking.status === 'cancelled' && (
-                                        <p style={{ color: '#ef4444' }}>
-                                            Cancelled By:
-                                            <span>
-                                                {" "}
-                                                {booking.cancelledBy === 'host' ? 'You (Host)' : 'User'}
-                                            </span>
-                                        </p>
+                                        <p style={{ color: '#ef4444' }}>Cancelled By: {booking.cancelledBy === 'user' ? 'user' : booking.cancelledBy === 'host' ? 'You' : 'Auto Cancelled'}</p>
                                     )}
                                 </div>
 
                                 <div>
-                                    <select value={booking.status} onChange={(e) => updateStatus(booking._id, e.target.value)} style={{ padding: '6px', borderRadius: '4px', border: '1px solid rgba(0,0,0,0.5)', outline: 'none', cursor: 'pointer' }}>
-                                        <option value="pending">Pending</option>
-                                        <option value="confirmed">Confirmed</option>
-                                        <option value="cancelled">Cancelled</option>
-                                    </select>
+                                    {booking.status === 'pending' && (Date.now() - new Date(booking.createdAt).getTime()) < 24 * 60 * 60 * 1000 ? (
+                                        <select value={booking.status} onChange={(e) => updateStatus(booking._id, e.target.value)} style={{ padding: '6px', borderRadius: '4px', border: '1px solid rgba(0,0,0,0.5)', outline: 'none', cursor: 'pointer' }}>
+                                            <option value="pending">Pending</option>
+                                            <option value="confirmed">Confirm</option>
+                                            <option value="cancelled">Cancel</option>
+                                        </select>
+                                    ) : (
+                                        <span style={{
+                                            background: booking.status === 'confirmed' ? 'rgba(16,185,129,0.1)' : booking.status === 'pending' ? 'rgba(59,130,246,0.1)' : 'rgba(255,0,0,0.1)',
+                                            color: booking.status === 'confirmed' ? '#10b981' : booking.status === 'pending' ? '#3b82f6' : '#ff0000',
+                                            padding: '8px 16px', borderRadius: '12px'
+                                        }}>
+                                            {booking.status}
+                                        </span>
+                                    )}
                                 </div>
                             </div>
                         ))}
