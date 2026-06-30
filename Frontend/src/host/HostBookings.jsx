@@ -96,49 +96,26 @@ const HostBookings = () => {
                         .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt))
                         .map(booking => (
                             <div key={booking._id} style={{ padding: '20px', borderRadius: '12px', border: '1px solid #27272a', display: 'flex', justifyContent: 'space-between', alignItems: 'center', gap: '20px' }}>
-                                <div>
-                                    <div style={{ fontSize: '0.9rem', marginBottom: '8px', display: 'flex', flexDirection: 'column', gap: '5px' }}>
-                                        <p>
-                                            User:
-                                            <span>
-                                                {" "}
-                                                {booking.userId?.name}
-                                            </span>
-                                        </p>
-                                        <p>
-                                            Listing:
-                                            <span>
-                                                {" "}
-                                                {booking.listingId?.name}
-                                            </span>
-                                        </p>
-                                        <p>
-                                            Check In:
-                                            <span>
-                                                {" "}
-                                                {new Date(booking.checkIn).toLocaleDateString('en-GB')}
-                                            </span>
-                                        </p>
 
-                                        <p>
-                                            Check Out:
-                                            <span>
-                                                {" "}
-                                                {new Date(booking.checkOut).toLocaleDateString('en-GB')}
-                                            </span>
-                                        </p>
-                                    </div>
-                                    <p style={{ fontSize: '0.9rem', marginBottom: '5px' }}>Placed On: <span>{new Date(booking.createdAt).toLocaleDateString('en-GB')}</span></p>
-                                    <p style={{ fontSize: '0.9rem' }}>Total: <span>₹{formatBookingTotal(booking)}</span></p>
-                                </div>
-                                <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-end', gap: '10px' }}>
+                                <div style={{ fontSize: '0.9rem', marginBottom: '8px', display: 'flex', flexDirection: 'column', gap: '5px' }}>
+                                    <p>Booked By: {booking.userId?.name}</p>
+                                    <p>Listing: {booking.listingId?.name}</p>
+                                    <p>Check In: {new Date(booking.checkIn).toLocaleDateString('en-GB')}</p>
+                                    <p>Check Out: {new Date(booking.checkOut).toLocaleDateString('en-GB')}</p>
+                                    <p>Placed On: {new Date(booking.createdAt).toLocaleDateString('en-GB')}</p>
+                                    <p>Total: ₹{formatBookingTotal(booking)}</p>
                                     {booking.status === 'cancelled' && (
                                         <p style={{ color: '#ef4444' }}>
-                                            {booking.cancelledBy === 'user'
-                                                ? 'User cancelled this booking'
-                                                : 'Owner cancelled this booking'}
+                                            Cancelled By:
+                                            <span>
+                                                {" "}
+                                                {booking.cancelledBy === 'host' ? 'You (Host)' : 'User'}
+                                            </span>
                                         </p>
                                     )}
+                                </div>
+
+                                <div>
                                     <select value={booking.status} onChange={(e) => updateStatus(booking._id, e.target.value)} style={{ padding: '6px', borderRadius: '4px', border: '1px solid rgba(0,0,0,0.5)', outline: 'none', cursor: 'pointer' }}>
                                         <option value="pending">Pending</option>
                                         <option value="confirmed">Confirmed</option>

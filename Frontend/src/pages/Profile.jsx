@@ -110,39 +110,29 @@ const Profile = () => {
             .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt))
             .map(booking => (
               <div key={booking._id} style={{ padding: '20px', borderRadius: '12px', border: '1px solid #27272a', display: 'flex', justifyContent: 'space-between', alignItems: 'center', gap: '20px' }}>
-                <div>
-                  <div style={{ fontSize: '0.9rem', marginBottom: '8px', display: 'flex', flexDirection: 'column', gap: '5px' }}>
-                    <p>
-                      Listing:
-                      <span>
-                        {" "}
-                        {booking.listingId?.name}
-                      </span>
-                    </p>
-                    <p>
-                      Check In:
-                      <span>
-                        {" "}
-                        {new Date(booking.checkIn).toLocaleDateString('en-GB')}
-                      </span>
-                    </p>
 
-                    <p>
-                      Check Out:
+                <div style={{ fontSize: '0.9rem', marginBottom: '8px', display: 'flex', flexDirection: 'column', gap: '5px' }}>
+                  <p>Listing: {booking.listingId?.name}</p>
+                  <p>Check In: {new Date(booking.checkIn).toLocaleDateString('en-GB')}</p>
+                  <p>Check Out: {new Date(booking.checkOut).toLocaleDateString('en-GB')}</p>
+                  <p>Placed On: {new Date(booking.createdAt).toLocaleDateString('en-GB')}</p>
+                  <p>Total: ₹{formatBookingTotal(booking)}</p>
+                  {booking.status === 'cancelled' && (
+                    <p style={{ color: '#ef4444' }}>
+                      Cancelled By:
                       <span>
                         {" "}
-                        {new Date(booking.checkOut).toLocaleDateString('en-GB')}
+                        {booking.cancelledBy === 'host' ? 'Host' : 'You (User)'}
                       </span>
                     </p>
-                  </div>
-                  <p style={{ fontSize: '0.9rem', marginBottom: '5px' }}>Placed On: <span>{new Date(booking.createdAt).toLocaleDateString('en-GB')}</span></p>
-                  <p style={{ fontSize: '0.9rem' }}>Total: <span>₹{formatBookingTotal(booking)}</span></p>
+                  )}
                 </div>
+
                 <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-end', gap: '10px' }}>
                   <span style={{
                     background: booking.status === 'confirmed' ? 'rgba(16,185,129,0.1)' : booking.status === 'pending' ? 'rgba(59,130,246,0.1)' : 'rgba(255,0,0,0.1)',
                     color: booking.status === 'confirmed' ? '#10b981' : booking.status === 'pending' ? '#3b82f6' : '#ff0000',
-                    padding: '8px 16px', borderRadius: '4px'
+                    padding: '8px 16px', borderRadius: '12px'
                   }}>
                     {booking.status}
                   </span>
