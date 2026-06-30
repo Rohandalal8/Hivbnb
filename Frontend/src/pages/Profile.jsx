@@ -48,6 +48,30 @@ const Profile = () => {
     fetchMyBookings();
   }, [user, navigate, logout]);
 
+  const updateStatus = async (bookingId, newStatus) => {
+    if (window.confirm(`Are you sure you want to cancel this booking? you will only get 50% refund if you cancel the booking.`)) {
+      try {
+        const response = await api.put(`/bookings/${bookingId}/status`, { status: newStatus, cancelledBy: 'user' });
+        const updatedBooking = response.data;
+        setBookings(prev =>
+          prev.map(booking =>
+            booking._id === bookingId
+              ? {
+                ...booking,
+                status: newStatus,
+                cancelledBy: "user"
+              }
+              : booking
+          )
+        );
+        toast.success('Booking status updated successfully!');
+      } catch (error) {
+        console.error('Error updating booking status:', error);
+        toast.error('Failed to update booking status.');
+      }
+    }
+  };
+
   const handleLogout = async () => {
     await logout();
     toast.info('Logged out successfully!');
@@ -114,7 +138,7 @@ const Profile = () => {
                   <p style={{ fontSize: '0.9rem', marginBottom: '5px' }}>Placed On: <span>{new Date(booking.createdAt).toLocaleDateString('en-GB')}</span></p>
                   <p style={{ fontSize: '0.9rem' }}>Total: <span>₹{formatBookingTotal(booking)}</span></p>
                 </div>
-                <div>
+                <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-end', gap: '10px' }}>
                   <span style={{
                     background: booking.status === 'confirmed' ? 'rgba(16,185,129,0.1)' : booking.status === 'pending' ? 'rgba(59,130,246,0.1)' : 'rgba(255,0,0,0.1)',
                     color: booking.status === 'confirmed' ? '#10b981' : booking.status === 'pending' ? '#3b82f6' : '#ff0000',
@@ -122,6 +146,9 @@ const Profile = () => {
                   }}>
                     {booking.status}
                   </span>
+                  {booking.status !== 'cancelled' && (
+                    <button className="btn" onClick={() => updateStatus(booking._id, 'cancelled')}>Cancel Booking</button>
+                  )}
                 </div>
               </div>
             ))}

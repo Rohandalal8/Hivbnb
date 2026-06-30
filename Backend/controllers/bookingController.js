@@ -94,12 +94,13 @@ const getOwnerBookings = async (req, res) => {
 const updateBookingStatus = async (req, res) => {
     try {
         const { id } = req.params;
-        const { status } = req.body;
+        const { status, cancelledBy } = req.body;
         const booking = await Booking.findById(id);
         if (!booking) {
             return res.status(404).json({ message: 'Booking not found' });
         }
         booking.status = status;
+        booking.cancelledBy = cancelledBy;
         await booking.save();
         res.json({ message: 'Booking status updated', booking });
     } catch (error) {

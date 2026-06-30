@@ -52,11 +52,19 @@ const HostBookings = () => {
 
     const updateStatus = async (bookingId, newStatus) => {
         try {
-            const response = await api.put(`/bookings/${bookingId}/status`, { status: newStatus });
+            const response = await api.put(`/bookings/${bookingId}/status`, { status: newStatus, cancelledBy: 'host' });
             const updatedBooking = response.data;
-            if (updatedBooking) {
-                setBookings(bookings.map(booking => booking._id === bookingId ? { ...booking, status: updatedBooking.status } : booking));
-            }
+            setBookings(prev =>
+                prev.map(booking =>
+                    booking._id === bookingId
+                        ? {
+                            ...booking,
+                            status: newStatus,
+                            cancelledBy: "host"
+                        }
+                        : booking
+                )
+            );
             toast.success('Booking status updated successfully!');
         } catch (error) {
             console.error('Error updating booking status:', error);
@@ -123,7 +131,14 @@ const HostBookings = () => {
                                     <p style={{ fontSize: '0.9rem', marginBottom: '5px' }}>Placed On: <span>{new Date(booking.createdAt).toLocaleDateString('en-GB')}</span></p>
                                     <p style={{ fontSize: '0.9rem' }}>Total: <span>₹{formatBookingTotal(booking)}</span></p>
                                 </div>
-                                <div>
+                                <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-end', gap: '10px' }}>
+                                    {booking.status === 'cancelled' && (
+                                        <p style={{ color: '#ef4444' }}>
+                                            {booking.cancelledBy === 'user'
+                                                ? 'User cancelled this booking'
+                                                : 'Owner cancelled this booking'}
+                                        </p>
+                                    )}
                                     <select value={booking.status} onChange={(e) => updateStatus(booking._id, e.target.value)} style={{ padding: '6px', borderRadius: '4px', border: '1px solid rgba(0,0,0,0.5)', outline: 'none', cursor: 'pointer' }}>
                                         <option value="pending">Pending</option>
                                         <option value="confirmed">Confirmed</option>

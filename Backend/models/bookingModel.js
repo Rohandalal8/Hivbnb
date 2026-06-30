@@ -39,6 +39,11 @@ const bookingSchema = new mongoose.Schema({
             "cancelled"
         ],
         default: "pending"
+    },
+    cancelledBy: {
+        type: String,
+        enum: ['user', 'host'],
+        default: null
     }
 
 }, { timestamps: true });
