@@ -408,7 +408,7 @@ const ListingDetail = () => {
                         </div>
                     </div>
                     <p style={{ color: '#80808b', fontSize: '0.8rem', padding: '5px' }}>Max {listing.guests} {listing.guests > 1 ? 'guests' : 'guest'} capacity</p>
-                    <button className="btn" style={{ width: '100%', marginTop: '10px' }} onClick={() => {
+                    <button className="btn" disabled={!user} style={{ width: '100%', marginTop: '10px', opacity: !user ? 0.5 : 1, cursor: !user ? 'not-allowed' : 'pointer' }} onClick={() => {
                         if (!user) {
                             toast.error('Please login to reserve this listing');
                             navigate('/login');
@@ -426,7 +426,7 @@ const ListingDetail = () => {
                             });
                         }
                     }}>
-                        Reserve
+                        {user ? 'Reserve' : 'Login to Reserve'}
                     </button>
 
                 </div>

@@ -31,7 +31,8 @@
 }
 
 .search-bar:focus {
-  border-color: #fe424f6f;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
+  border: 1px solid rgba(0, 0, 0, 0.3);
 }
 
 @media (max-width: 768px) {
@@ -89,4 +90,14 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
+}
+
+/* Admin Bookings */
+.scrollbar {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+}
+
+.scrollbar::-webkit-scrollbar {
+    display: none;
 }

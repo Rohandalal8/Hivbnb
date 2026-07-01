@@ -22,6 +22,7 @@ import Checkout from "./pages/Checkout";
 import BookingSuccess from "./pages/BookingSuccess";
 import HostBookings from "./host/HostBookings";
 import AdminDashboard from "./admin/AdminDashboard";
+import AdminBookings from "./admin/AdminBookings";
 
 function App() {
   return (
@@ -47,6 +48,7 @@ function App() {
         <Route path="/booking-success" element={<BookingSuccess />} />
         <Route path="/host-bookings" element={<HostBookings />} />
         <Route path="/admin-dashboard" element={<AdminDashboard />} />
+        <Route path="/admin-bookings" element={<AdminBookings />} />
       </Routes>
       <Footer />
     </Router>

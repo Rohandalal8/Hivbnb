@@ -5,7 +5,6 @@ import HostListingCard from '../components/HostListingCard';
 import Loader from '../components/Loader';
 import api from '../api/axios';
 import '../styles/home.css';
-import { auth } from '../firebase';
 
 const AdminDashboard = () => {
   const [listings, setListings] = useState([]);
@@ -46,12 +45,16 @@ const AdminDashboard = () => {
     fetchListings();
     fetchProfile();
 
-    if (profile && profile.role !== 'admin') {
+  }, [user, authLoading, navigate]);
+
+  useEffect(() => {
+    if(!profile) return;
+
+    if (profile.role !== 'admin') {
       navigate('/');
       return;
     }
-
-  }, [user, authLoading, navigate]);
+  }, [profile, navigate]);
 
 
   if (authLoading) {

@@ -147,7 +147,9 @@ const updateBookingStatus = async (req, res) => {
         }
 
         booking.status = status;
-        booking.cancelledBy = 'host';
+        if (status === 'cancelled') {
+            booking.cancelledBy = 'host';
+        }
         await booking.save();
         res.json({ message: 'Booking status updated', booking });
     } catch (error) {
@@ -179,6 +181,16 @@ const cancelBooking = async (req, res) => {
     }
 };
 
+const allBookings = async (req, res) => {
+    try {
+        const bookings = await Booking.find().populate('listingId').populate('userId', 'name email');
+        res.json(bookings);
+    } catch (error) {
+        console.error('Error fetching all bookings:', error);
+        res.status(500).json({ message: 'Error fetching all bookings', error });
+    }
+};
+
 module.exports = {
     createBooking,
     myBookings,
@@ -186,5 +198,6 @@ module.exports = {
     getOwnerBookings,
     getUnavailableDates,
     updateBookingStatus,
-    cancelBooking
+    cancelBooking,
+    allBookings
 };

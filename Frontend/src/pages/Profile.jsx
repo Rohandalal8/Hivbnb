@@ -17,6 +17,7 @@ const Profile = () => {
 
     if (!user) {
       navigate('/login');
+      toast.info('Please log in to view your profile.');
       return;
     }
     const fetchMyBookings = async () => {
