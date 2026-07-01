@@ -21,6 +21,7 @@ import Profile from "./pages/Profile";
 import Checkout from "./pages/Checkout";
 import BookingSuccess from "./pages/BookingSuccess";
 import HostBookings from "./host/HostBookings";
+import AdminDashboard from "./admin/AdminDashboard";
 
 function App() {
   return (
@@ -45,6 +46,7 @@ function App() {
         <Route path="/checkout" element={<Checkout />} />
         <Route path="/booking-success" element={<BookingSuccess />} />
         <Route path="/host-bookings" element={<HostBookings />} />
+        <Route path="/admin-dashboard" element={<AdminDashboard />} />
       </Routes>
       <Footer />
     </Router>

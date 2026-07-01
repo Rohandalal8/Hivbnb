@@ -105,7 +105,7 @@ const HostBookings = () => {
                                     <p>Placed On: {new Date(booking.createdAt).toLocaleDateString('en-GB')}</p>
                                     <p>Total: ₹{formatBookingTotal(booking)}</p>
                                     {booking.status === 'cancelled' && (
-                                        <p style={{ color: '#ef4444' }}>Cancelled By: {booking.cancelledBy === 'user' ? 'user' : booking.cancelledBy === 'host' ? 'You' : 'Auto Cancelled'}</p>
+                                        <p style={{ color: '#ef4444' }}>Cancelled By: {booking.cancelledBy === 'user' ? 'User' : booking.cancelledBy === 'host' ? 'You' : 'Auto Cancelled'}</p>
                                     )}
                                 </div>
 

@@ -91,6 +91,9 @@ const Profile = () => {
           <h2 style={{ marginBottom: '10px' }}>My Profile</h2>
           <p style={{ fontSize: '1rem', marginBottom: '5px' }}>Name: {profile?.name}</p>
           <p style={{ fontSize: '1rem', whiteSpace: 'nowrap' }}>Email: {profile?.email}</p>
+          {profile?.role === 'admin' && (
+            <button className="btn" style={{ marginTop: '10px' }} onClick={() => navigate('/admin-dashboard')}>Admin Dashboard</button>
+          )}
         </div>
         <button onClick={handleLogout} className="btn" style={{ background: '#ef4444', boxShadow: 'none' }}>Logout</button>
       </div>

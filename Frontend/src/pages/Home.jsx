@@ -13,7 +13,7 @@ const Home = () => {
   const [rishikesh, setRishikesh] = useState([]);
   const [mussoorie, setMussoorie] = useState([]);
   const [search, setSearch] = useState("");
-  const [sortBy, setSortBy] = useState("selling");
+  const [filter, setFilter] = useState("all");
   const [loading, setLoading] = useState(true);
   const [wishlistIds, setWishlistIds] = useState([]);
   const { user } = useContext(AuthContext);
@@ -58,10 +58,10 @@ const Home = () => {
     <div className="container" style={{ maxWidth: '1600px', margin: '0 auto', padding: '15px' }}>
       <div className="search-container">
         <select
-          value={sortBy}
+          value={filter}
           onChange={(e) => {
             const value = e.target.value;
-            setSortBy(value);
+            setFilter(value);
 
             navigate(`/bnb?filter=${value}`);
           }}
