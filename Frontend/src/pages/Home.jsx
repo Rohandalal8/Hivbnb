@@ -88,62 +88,48 @@ const Home = () => {
           className="search-bar"
         />
       </div>
-
-      <h2>Available in Dehradun</h2>
       {loading ? (
-        <Loader />
-      ) : (
-        <div className="listing-grid" style={{ justifyContent: 'flex-start' }}>
-          {dehradun.map(listing => (
-            <ListingCard key={listing._id} listing={listing} wishlistIds={wishlistIds} setWishlistIds={setWishlistIds} />
-          ))}
+        <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '50vh' }}>
+          <Loader />
         </div>
-      )}
-
-      <h2>Stay in Goa</h2>
-      {loading ? (
-        <Loader />
       ) : (
-        <div className="listing-grid" style={{ justifyContent: 'flex-start' }}>
-          {goa.map(listing => (
-            <ListingCard key={listing._id} listing={listing} wishlistIds={wishlistIds} setWishlistIds={setWishlistIds} />
-          ))}
-        </div>
-      )}
+        <>
+          <h2>Available in Dehradun</h2>
+          <div className="listing-grid" style={{ justifyContent: 'flex-start' }}>
+            {dehradun.map(listing => (
+              <ListingCard key={listing._id} listing={listing} wishlistIds={wishlistIds} setWishlistIds={setWishlistIds} />
+            ))}
+          </div>
 
-      <h2>Places to stay in Manali</h2>
-      {loading ? (
-        <Loader />
-      ) : (
-        <div className="listing-grid" style={{ justifyContent: 'flex-start' }}>
-          {manali.map(listing => (
-            <ListingCard key={listing._id} listing={listing} wishlistIds={wishlistIds} setWishlistIds={setWishlistIds} />
-          ))}
-        </div>
-      )}
+          <h2>Stay in Goa</h2>
+          <div className="listing-grid" style={{ justifyContent: 'flex-start' }}>
+            {goa.map(listing => (
+              <ListingCard key={listing._id} listing={listing} wishlistIds={wishlistIds} setWishlistIds={setWishlistIds} />
+            ))}
+          </div>
 
-      <h2>Homes in Rishikesh</h2>
-      {loading ? (
-        <Loader />
-      ) : (
-        <div className="listing-grid" style={{ justifyContent: 'flex-start' }}>
-          {rishikesh.map(listing => (
-            <ListingCard key={listing._id} listing={listing} wishlistIds={wishlistIds} setWishlistIds={setWishlistIds} />
-          ))}
-        </div>
-      )}
+          <h2>Places to stay in Manali</h2>
+          <div className="listing-grid" style={{ justifyContent: 'flex-start' }}>
+            {manali.map(listing => (
+              <ListingCard key={listing._id} listing={listing} wishlistIds={wishlistIds} setWishlistIds={setWishlistIds} />
+            ))}
+          </div>
 
-      <h2>Checkout Homes in Mussoorie</h2>
-      {loading ? (
-        <Loader />
-      ) : (
-        <div className="listing-grid" style={{ justifyContent: 'flex-start' }}>
-          {mussoorie.map(listing => (
-            <ListingCard key={listing._id} listing={listing} wishlistIds={wishlistIds} setWishlistIds={setWishlistIds} />
-          ))}
-        </div>
-      )}
+          <h2>Homes in Rishikesh</h2>
+          <div className="listing-grid" style={{ justifyContent: 'flex-start' }}>
+            {rishikesh.map(listing => (
+              <ListingCard key={listing._id} listing={listing} wishlistIds={wishlistIds} setWishlistIds={setWishlistIds} />
+            ))}
+          </div>
 
+          <h2>Checkout Homes in Mussoorie</h2>
+          <div className="listing-grid" style={{ justifyContent: 'flex-start' }}>
+            {mussoorie.map(listing => (
+              <ListingCard key={listing._id} listing={listing} wishlistIds={wishlistIds} setWishlistIds={setWishlistIds} />
+            ))}
+          </div>
+        </>
+      )}
     </div>
   );
 }
