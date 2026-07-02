@@ -188,7 +188,6 @@
   }
   .listing-detail {
     flex-direction: column;
-    padding-bottom: 110px;
   }
 
   .detail-images {
@@ -197,6 +196,7 @@
 
   .detail-info {
     width: 100%;
+    padding-bottom: 100px;
   }
 
   .main-image {

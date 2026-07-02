@@ -352,7 +352,6 @@ const ListingDetail = () => {
                             </div>
                         )}
                     </div>
-
                 </div>
                 <div className="detail-price">
                     {listing.discount > 0 ? (
