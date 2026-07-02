@@ -13,7 +13,7 @@ import ReturnPolicy from "./pages/ReturnPolicy";
 import Disclaimer from "./pages/Disclaimer";
 import AddListing from "./host/AddListing";
 import Bnb from "./pages/Bnb";
-import ListingDetail from "./pages/listingDetailtemp";
+import ListingDetail from "./pages/ListingDetail";
 import HostDashboard from "./host/HostDashboard";
 import EditListing from "./host/EditListing";
 import Wishlists from "./pages/Wishlists";
