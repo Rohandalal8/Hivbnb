@@ -46,6 +46,7 @@
 
 .navbar-links a:hover {
     color: #000;
+    text-decoration: none;
 }
 
 .navbar-links a::after {
