@@ -26,6 +26,10 @@
     text-shadow: 0 2px 10px rgba(249, 115, 22, 0.1);
 }
 
+.navbar-brand a:hover {
+    text-decoration: none;
+}
+
 .navbar-links {
     display: flex;
     align-items: center;
