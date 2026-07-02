@@ -28,6 +28,7 @@
 
 .navbar-brand a:hover {
     text-decoration: none;
+    color: #fe424d;
 }
 
 .navbar-links {
