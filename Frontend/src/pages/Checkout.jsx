@@ -133,12 +133,13 @@ const Checkout = () => {
                         <span>Check-out: </span><span>{new Date(booking.checkOut).toDateString()}</span>
                     </p>
                 </div>
-                <div className="price-info">
+                <div className="dates-info">
                     <h2>Price details</h2>
                     <p><span>{booking?.nights} nights X ₹{discountedPrice.toFixed(2)}</span><span>₹{(discountedPrice * booking?.nights).toFixed(2)}</span></p>
                     <p><span>Platform Fee </span><span>₹{platformFee.toFixed(2)}</span></p>
                 </div>
                 <h3 style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '15px 0' }}><span>Total: </span><span>₹{totalAmount.toFixed(2)}</span></h3>
+                <p style={{ fontSize: '0.75rem', textAlign: 'center', marginBottom: '10px' }}>The host has 24 hours to confirm your booking. You'll pay now, but get a full refund if the booking isn't confirmed.</p>
                 <button className="btn" style={{ width: '100%' }} onClick={handlePayment}>Pay Now</button>
             </div>
         </div>
