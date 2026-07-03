@@ -34,11 +34,6 @@ body {
     display: none;
 }
 
-a:hover {
-    text-decoration: underline;
-    color: #000;
-}
-
 /* buttons */
 .btn {
     cursor: pointer;

@@ -56,7 +56,7 @@ const HostDashboard = () => {
     }
 
     return (
-        <div className="container" style={{ maxWidth: '1300px', margin: '0 auto', padding: '15px' }}>
+        <div className="container" style={{ maxWidth: '1500px', margin: '0 auto', padding: '15px' }}>
             <button className="btn" style={{ marginBottom: '20px' }} onClick={() => navigate('/add-listing')}>
                 + Add Listing
             </button>

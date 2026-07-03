@@ -131,7 +131,7 @@ const AdminBookings = () => {
     });
 
     return (
-        <div className="container" style={{ maxWidth: '1300px', margin: '0 auto', padding: '15px' }}>
+        <div className="container" style={{ maxWidth: '1500px', margin: '0 auto', padding: '15px' }}>
             <div style={{ display: 'flex', alignItems: 'center', marginBottom: '10px', gap: '20px', borderBottom: '1px solid #ccc', paddingBottom: '10px' }}>
                 <Link to="/admin-dashboard"><h2>All Listings</h2></Link>
                 <Link to="/admin-bookings"><h2>All Bookings</h2></Link>

@@ -60,7 +60,7 @@ const Wishlists = () => {
     }
 
     return (
-        <div className="container" style={{ maxWidth: '1300px', margin: '0 auto', padding: '15px' }}>
+        <div className="container" style={{ maxWidth: '1500px', margin: '0 auto', padding: '15px' }}>
             <h2>My Wishlist</h2>
 
             {loading ? (
