@@ -1,29 +1,12 @@
 const mongoose = require('mongoose');
 
-let connectionPromise;
-
 const connectDB = async () => {
-    if (mongoose.connection.readyState === 1) {
-        return mongoose.connection;
-    }
-
-    if (!connectionPromise) {
-        connectionPromise = mongoose.connect(process.env.MONGO_URI)
-            .then(() => {
-                console.log('Connected to MongoDB');
-                return mongoose.connection;
-            })
-            .catch((err) => {
-                connectionPromise = undefined;
-                throw err;
-            });
-    }
-
     try {
-        return await connectionPromise;
+        const conn = await mongoose.connect(process.env.MONGO_URI);
+        console.log('Connected to MongoDB');
     } catch (err) {
-        console.error('Error connecting to MongoDB:', err.message);
-        throw err;
+        console.error('Error connecting to MongoDB:', err);
+        process.exit(1); // Exit the process with failure
     }
 };
 
