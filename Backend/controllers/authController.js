@@ -1,7 +1,9 @@
 const User = require('../models/userModel');
 
 const registerUser = async (req, res) => {
-    const { firebaseUid, name, email } = req.body;
+    const { name } = req.body;
+    const firebaseUid = req.firebaseUser.uid;
+    const email = req.firebaseUser.email;
 
     try {
         // Check if user already exists

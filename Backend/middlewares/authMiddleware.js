@@ -9,6 +9,11 @@ const protect = async (req, res, next) => {
             }
             const token = authHeader.split(' ')[1];
             const decoded = await firebaseAdmin.auth.verifyIdToken(token);
+
+            if (decoded.email_verified !== true) {
+                return res.status(403).json({ message: 'Please verify your email before continuing' });
+            }
+
             req.firebaseUser = decoded;
             next();
         } catch (err) {

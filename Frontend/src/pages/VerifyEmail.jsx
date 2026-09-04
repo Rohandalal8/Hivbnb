@@ -3,6 +3,7 @@ import { auth } from '../firebase';
 import { sendEmailVerification } from 'firebase/auth';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
+import api from '../api/axios';
 
 const VerifyEmail = () => {
     const navigate = useNavigate();
@@ -14,6 +15,18 @@ const VerifyEmail = () => {
                 await auth.currentUser.reload();
 
                 if (auth.currentUser.emailVerified) {
+                    const pendingRegistration = sessionStorage.getItem('pendingRegistration');
+
+                    if (pendingRegistration) {
+                        const { name } = JSON.parse(pendingRegistration);
+                        await auth.currentUser.getIdToken(true);
+                        await api.post('/auth/register', {
+                            name,
+                            email: auth.currentUser.email
+                        });
+                        sessionStorage.removeItem('pendingRegistration');
+                    }
+
                     toast.success('Email Verified Successfully!');
                     clearInterval(interval);
                     navigate('/');

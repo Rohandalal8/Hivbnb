@@ -20,6 +20,11 @@ const Profile = () => {
       toast.info('Please log in to view your profile.');
       return;
     }
+    if (!user.emailVerified) {
+      navigate('/verify-email');
+      toast.info('Please verify your email to view your profile.');
+      return;
+    }
     const fetchMyBookings = async () => {
       try {
         const res = await api.get('/bookings/myBookings');
@@ -47,7 +52,7 @@ const Profile = () => {
 
     fetchProfile();
     fetchMyBookings();
-  }, [user, navigate, logout]);
+  }, [user, authLoading, navigate, logout]);
 
   const cancelBooking = async (bookingId) => {
     if (window.confirm(`Are you sure you want to cancel this booking? you will only get 50% refund if you cancel the booking.`)) {
@@ -83,7 +88,7 @@ const Profile = () => {
     return typeof total === 'number' ? total.toFixed(2) : '0.00';
   };
 
-  if (!user) return null;
+  if (!user || !user.emailVerified) return null;
 
   return (
     <div className="container">

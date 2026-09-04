@@ -33,15 +33,20 @@ const Checkout = () => {
     }
 
     const handlePayment = async () => {
+        if (!user) {
+            toast.info("You need to be logged in to make a payment.");
+            navigate("/login");
+            return;
+        }
+
+        if (!user.emailVerified) {
+            toast.info("Please verify your email before making a payment.");
+            navigate("/verify-email");
+            return;
+        }
+
         setIsPaying(true);
         try {
-
-            if (!user) {
-                toast.info("You need to be logged in to make a payment.");
-                navigate("/login");
-                return;
-            }
-
             const response = await api.post('/payment/order', {
                 listingId: booking.listing._id,
                 checkIn: booking.checkIn,
@@ -140,7 +145,7 @@ const Checkout = () => {
                 </div>
                 <h3 style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '15px 0' }}><span>Total: </span><span>₹{totalAmount.toFixed(2)}</span></h3>
                 <p style={{ fontSize: '0.75rem', textAlign: 'center', marginBottom: '10px' }}>The host has 24 hours to confirm your booking. You'll pay now, but get a full refund if the booking isn't confirmed.</p>
-                <button className="btn" style={{ width: '100%' }} onClick={handlePayment}>Pay Now</button>
+                <button className="btn" disabled={!user || !user.emailVerified} style={{ width: '100%', opacity: !user || !user.emailVerified ? 0.5 : 1, cursor: !user || !user.emailVerified ? 'not-allowed' : 'pointer' }} onClick={handlePayment}>Pay Now</button>
             </div>
         </div>
     );

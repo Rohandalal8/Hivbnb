@@ -22,6 +22,11 @@ const Wishlists = () => {
             toast.info("Please log in to view your wishlist.");
             return; // Exit early if user is not logged in
         }
+        if (!user.emailVerified) {
+            navigate("/verify-email");
+            toast.info("Please verify your email to view your wishlist.");
+            return;
+        }
         const fetchListings = async () => {
             try {
                 const response = await api.get('/listings/wishlist');
@@ -54,6 +59,8 @@ const Wishlists = () => {
             </div>
         );
     }
+
+    if (!user || !user.emailVerified) return null;
 
     const discountedPrice = (price, discount) => {
         return price - (price * discount) / 100;

@@ -31,6 +31,9 @@ const AddListing = () => {
         if (!user) {
             navigate("/login");
             toast.info("Please log in to add a listing.");
+        } else if (!user.emailVerified) {
+            navigate("/verify-email");
+            toast.info("Please verify your email to add a listing.");
         }
     }, [user, authLoading, navigate]);
 
@@ -44,6 +47,12 @@ const AddListing = () => {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
+        if (!user || !user.emailVerified) {
+            toast.info("Please verify your email to add a listing.");
+            navigate(user ? "/verify-email" : "/login");
+            return;
+        }
+
         if (!images || images.length === 0) {
             toast.info("Please upload at least one image.");
             return;
@@ -160,7 +169,7 @@ const AddListing = () => {
                 />
                 <span style={{ fontSize: '0.8rem', color: '#00000092' }}>You can upload multiple images for the product. (Max 20)</span>
 
-                <button className="btn" type="submit" disabled={loading}>
+                <button className="btn" type="submit" disabled={loading || !user || !user.emailVerified} style={{ opacity: loading || !user || !user.emailVerified ? 0.5 : 1, cursor: loading || !user || !user.emailVerified ? 'not-allowed' : 'pointer' }}>
                     {loading ? 'Adding Listing...' : 'Add Listing'}
                 </button>
 

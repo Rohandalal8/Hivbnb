@@ -25,11 +25,7 @@ const Register = () => {
                 password
             );
             await sendEmailVerification(userCredential.user);
-            await api.post(`/auth/register`, {
-                firebaseUid: userCredential.user.uid,
-                name,
-                email
-            });
+            sessionStorage.setItem('pendingRegistration', JSON.stringify({ name }));
             navigate("/verify-email");
             toast.success("Verification email sent. Please check your inbox or spam folder.");
         } catch (error) {

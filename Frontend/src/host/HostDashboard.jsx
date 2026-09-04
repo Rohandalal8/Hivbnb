@@ -19,6 +19,12 @@ const HostDashboard = () => {
         if (!user) {
             navigate("/login");
             toast.info("Please log in to view your dashboard.");
+            return;
+        }
+        if (!user.emailVerified) {
+            navigate("/verify-email");
+            toast.info("Please verify your email to view your dashboard.");
+            return;
         }
 
         const fetchListings = async () => {
@@ -42,6 +48,8 @@ const HostDashboard = () => {
             </div>
         );
     }
+
+    if (!user || !user.emailVerified) return null;
 
     if (!listings || listings.length === 0) {
         return (

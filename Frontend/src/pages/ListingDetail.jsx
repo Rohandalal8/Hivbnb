@@ -188,6 +188,12 @@ const ListingDetail = () => {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
+        if (!user?.emailVerified) {
+            toast.info('Please verify your email before submitting a review');
+            navigate('/verify-email');
+            return;
+        }
+
         try {
             const response = await api.post(`/listings/reviews/${listing._id}`, {
                 rating,
@@ -297,7 +303,17 @@ const ListingDetail = () => {
                         <p>Based on {listing.numReviews} customer ratings</p>
                     </div>
 
-                    <button onClick={() => setAddReview(true)} disabled={!user} className="btn" style={{ width: '50%', opacity: !user ? 0.5 : 1, cursor: !user ? 'not-allowed' : 'pointer' }}>
+                    <button onClick={() => {
+                        if (!user) {
+                            toast.info('Please login to submit a review');
+                            navigate('/login');
+                        } else if (!user.emailVerified) {
+                            toast.info('Please verify your email before submitting a review');
+                            navigate('/verify-email');
+                        } else {
+                            setAddReview(true);
+                        }
+                    }} disabled={!user || !user.emailVerified} className="btn" style={{ width: '50%', opacity: !user || !user.emailVerified ? 0.5 : 1, cursor: !user || !user.emailVerified ? 'not-allowed' : 'pointer' }}>
                         {user ? 'Add Review' : 'Login to Review'}
                     </button>
 
@@ -407,10 +423,13 @@ const ListingDetail = () => {
                         </div>
                     </div>
                     <p style={{ color: '#80808b', fontSize: '0.8rem', padding: '5px' }}>Max {listing.guests} {listing.guests > 1 ? 'guests' : 'guest'} capacity</p>
-                    <button className="btn" disabled={!user} style={{ width: '100%', marginTop: '10px', opacity: !user ? 0.5 : 1, cursor: !user ? 'not-allowed' : 'pointer' }} onClick={() => {
+                    <button className="btn" disabled={!user || !user.emailVerified} style={{ width: '100%', marginTop: '10px', opacity: !user || !user.emailVerified ? 0.5 : 1, cursor: !user || !user.emailVerified ? 'not-allowed' : 'pointer' }} onClick={() => {
                         if (!user) {
                             toast.error('Please login to reserve this listing');
                             navigate('/login');
+                        } else if (!user.emailVerified) {
+                            toast.info('Please verify your email before making a reservation');
+                            navigate('/verify-email');
                         } else {
                             navigate(`/checkout`, {
                                 state: {
