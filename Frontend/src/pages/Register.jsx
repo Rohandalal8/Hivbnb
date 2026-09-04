@@ -68,11 +68,10 @@ const Register = () => {
                 auth,
                 provider
             );
+            await result.user.getIdToken(true);
 
             await api.post(`/auth/register`, {
-                firebaseUid: result.user.uid,
                 name: result.user.displayName,
-                email: result.user.email
             });
             toast.success("Google Login Successful");
             navigate("/");
